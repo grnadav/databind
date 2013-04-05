@@ -73,6 +73,38 @@ DataBind = (function () {
         }
     }
 
+    function keyExists(model, key) {
+        var splitKey = key.split('.');
+        var modelDepth = model;
+        var i;
+
+        for (i=0; i<splitKey.length; i++) {
+            if (!modelDepth.hasOwnProperty(splitKey[i])) return false;
+            modelDepth = modelDepth[ splitKey[i] ];
+        }
+        return true;
+    }
+
+    function getModelDeepKey(model, key) {
+        var splitKey = key.split('.');
+        var modelDepth = model;
+        var i;
+
+        for (i=0; i<splitKey.length-1; i++) {
+            modelDepth = modelDepth[ splitKey[i] ];
+        }
+        return modelDepth;
+    }
+
+    function modelValue(model, key, newVal) {
+        var splitKey = key.split('.');
+        var deepModel = getModelDeepKey(model, key);
+        if (newVal !== undefined) {
+            deepModel[splitKey[ splitKey.length-1 ]] = newVal;
+        }
+        return deepModel[splitKey[ splitKey.length-1 ]];
+    }
+
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = cfg || {};
@@ -83,23 +115,25 @@ DataBind = (function () {
         // extract model's key to watch from el's data-key
         var key = el.dataset.key;
         // make sure the key is defined in the model
-        // TODO make sure works for nested keys
-        if (model[key] === undefined) return;
+        if (!keyExists(model,key)) return;
         // update elem from model
-        value(el, model[key]);
+        var modelVal = modelValue(model, key);
+        var deepModel = getModelDeepKey(model, key);
+        var deepKey = key.split('.');
+        deepKey = deepKey[ deepKey.length-1 ];
+        value(el, modelVal);
         // listen to elem changes -> on change set model with new value
         listen(el, function (ev) {
             var newVal = value(this);
-            var key = this.dataset.key;
             // TODO consider colsuring the model here
-            model[key] = newVal;
+            modelValue(deepModel, deepKey, newVal);
         });
         // listen again, just to print it out
         // TODO remove this debug calls
         listen(el, changeHandler);
 
         // watch model's key -> on change set el's new value
-        WatchJS.watch(model, key, function(key,setOrGet,newVal,oldVal) {
+        WatchJS.watch(deepModel, deepKey, function(key,setOrGet,newVal,oldVal) {
             // TODO consider colsuring the el here
             value(el, newVal);
         });
@@ -107,6 +141,5 @@ DataBind = (function () {
 
     return {
         bind: bind
-//        ,value: value
     };
 })();
