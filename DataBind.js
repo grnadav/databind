@@ -208,26 +208,19 @@ DataBind = (function () {
     function bindSingleEl(el, model, cfg) {
         if (!el || !model) return;
 
-        // TODO extract this section somehow
-        // extract model's key to watch from el's data-key
-        var key = getDatasetKey(el);
-        // make sure the key is defined in the model
-        if (!keyExists(model, key)) return;
-        var deepModel = getModelDeepKey(model, key);
-        var deepKey = key.split('.');
-        deepKey = deepKey[ deepKey.length - 1 ];
-
+        var props = getCommonBindingProps(el, model);
+        if (!props.keyExists) return;
 
         // update elem from model
-        var modelVal = modelValue(model, key);
+        var modelVal = modelValue(model, props.key);
         value(el, modelVal);
 
         if (cfg.dom) {
-            bindDom(el, deepModel, deepKey);
+            bindDom(el, props.deepModel, props.deepKey);
         }
 
         if (cfg.model) {
-            bindModel(el, deepModel, deepKey);
+            bindModel(el, props.deepModel, props.deepKey);
         }
     }
 
@@ -251,22 +244,37 @@ DataBind = (function () {
         });
     }
 
-    function unbindSingleEl(el, model, cfg) {
-        if (!el || !model) return;
-        // TODO extract this section somehow
+    function getCommonBindingProps(el, model) {
+        if (!el || !model) return {};
+
         // extract model's key to watch from el's data-key
         var key = getDatasetKey(el);
         // make sure the key is defined in the model
-        if (!keyExists(model, key)) return;
+        var isKeyExists = keyExists(model, key);
         var deepModel = getModelDeepKey(model, key);
         var deepKey = key.split('.');
         deepKey = deepKey[ deepKey.length - 1 ];
+
+        return {
+            key: key,
+            deepKey: deepKey,
+            deepModel: deepModel,
+            keyExists: isKeyExists
+        }
+    }
+
+    function unbindSingleEl(el, model, cfg) {
+        if (!el || !model) return;
+
+        var props = getCommonBindingProps(el, model);
+        if (!props.keyExists) return;
+
         if (cfg.dom) {
             unbindDom(el);
         }
 
         if (cfg.model) {
-            unbindModel(deepModel, deepKey);
+            unbindModel(props.deepModel, props.deepKey);
         }
     }
 
