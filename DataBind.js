@@ -80,15 +80,24 @@ DataBind = (function () {
         }
     }
 
+    function getOrGenElHashkey(el) {
+        if (!el.hashkey) {
+            el.hashkey = Date.now() + Math.floor(Math.random() * 100000);
+        }
+
+        return el.hashkey;
+    }
+
     function listen(el, fn) {
         if (!el || !fn) return;
 
+        var hashkey = getOrGenElHashkey(el);
         // save the listener in listeners has for later removal
-        listenersHash[el] = listenersHash[el] || [];
+        listenersHash[hashkey] = listenersHash[hashkey] || [];
         // prevent double listening on same fn on same obj
-        if (listenersHash[el].indexOf(fn) > -1) return;
+        if (listenersHash[hashkey].indexOf(fn) > -1) return;
         // we're safe to add this handler
-        listenersHash[el].push(fn);
+        listenersHash[hashkey].push(fn);
 
         var evName = getEventNameForEl(el);
         el.addEventListener(evName, fn, false);
@@ -96,28 +105,28 @@ DataBind = (function () {
 
     function unlistenOne(el, fn) {
         // check if this fn was ever listened to
-        var idx = listenersHash[el].indexOf(fn);
-        if (!listenersHash[el] || idx === -1) return;
+        var hashkey = getOrGenElHashkey(el);
+        var idx = listenersHash[hashkey].indexOf(fn);
+        if (!listenersHash[hashkey] || idx === -1) return;
         // remove fn from the hash
-        listenersHash[el].splice(idx, 1);
+        listenersHash[hashkey].splice(idx, 1);
 
         var evName = getEventNameForEl(el);
         el.removeEventListener(evName, fn, false);
     }
 
     function unlisten(el, fn) {
-        var listeners = listenersHash[el];
+        var hashkey = getOrGenElHashkey(el);
+        var listeners = listenersHash[hashkey];
         if (!el || !listeners) return;
         if (fn) {
             return unlistenOne(el, fn);
         }
         // no fn provided - remove all
-        var i, keys = listeners.keys, key;
-        for (i = 0; i < keys.length; i++) {
-            key = keys[i];
-            if (listeners.hasOwnProperty(key)) {
-                unlistenOne(el, listeners[key]);
-            }
+        var listenersClone = listeners.concat();
+        var i, len = listenersClone.length;
+        for (i = 0; i < len; i++) {
+            unlistenOne(el, listenersClone[i]);
         }
     }
 
@@ -155,7 +164,7 @@ DataBind = (function () {
 
     function bindDom(el, deepModel, deepKey) {
         // listen to elem changes -> on change set model with new value
-        var fn = (function(el, deepModel, deepKey, modelValueFn, valueFn) {
+        var fn = (function (el, deepModel, deepKey, modelValueFn, valueFn) {
             return function (ev) {
                 var newVal = valueFn(this);
                 modelValueFn(deepModel, deepKey, newVal);
@@ -182,8 +191,13 @@ DataBind = (function () {
     }
 
     function unbindModel(deepModel, deepKey) {
-        // TODO good chance i need the function to unwatch
-        WatchJS.unwatch(deepModel, deepKey);
+        // TODO not use internal impl of watch.js - deepModel.watchers[deepKey]
+        var watchers = deepModel.watchers[deepKey];
+        var i;
+        for (i = 0; i < watchers.length; i++) {
+            WatchJS.unwatch(deepModel, deepKey, watchers[i]);
+        }
+
     }
 
     function getDatasetKey(el) {
@@ -193,15 +207,19 @@ DataBind = (function () {
 
     function bindSingleEl(el, model, cfg) {
         if (!el || !model) return;
+
+        // TODO extract this section somehow
         // extract model's key to watch from el's data-key
         var key = getDatasetKey(el);
         // make sure the key is defined in the model
         if (!keyExists(model, key)) return;
-        // update elem from model
-        var modelVal = modelValue(model, key);
         var deepModel = getModelDeepKey(model, key);
         var deepKey = key.split('.');
         deepKey = deepKey[ deepKey.length - 1 ];
+
+
+        // update elem from model
+        var modelVal = modelValue(model, key);
         value(el, modelVal);
 
         if (cfg.dom) {
@@ -234,11 +252,26 @@ DataBind = (function () {
     }
 
     function unbindSingleEl(el, model, cfg) {
+        if (!el || !model) return;
+        // TODO extract this section somehow
+        // extract model's key to watch from el's data-key
+        var key = getDatasetKey(el);
+        // make sure the key is defined in the model
+        if (!keyExists(model, key)) return;
+        var deepModel = getModelDeepKey(model, key);
+        var deepKey = key.split('.');
+        deepKey = deepKey[ deepKey.length - 1 ];
+        if (cfg.dom) {
+            unbindDom(el);
+        }
 
+        if (cfg.model) {
+            unbindModel(deepModel, deepKey);
+        }
     }
 
     function unbind(el, model, cfg) {
-        if (!el) return;
+        if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
         // TODO if cfg.children traverse el's tree and unbind all children that have the key
         unbindSingleEl(el, model, {
