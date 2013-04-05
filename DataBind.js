@@ -234,16 +234,6 @@ DataBind = (function () {
         return cfg;
     }
 
-    function bind(el, model, cfg) {
-        if (!el || !model) return;
-        cfg = getBindUnbindConfigDefaults(cfg);
-        // TODO if cfg.children traverse el's tree and bind all children that have the key
-        bindSingleEl(el, model, {
-            dom: cfg.dom,
-            model: cfg.model
-        });
-    }
-
     function getCommonBindingProps(el, model) {
         if (!el || !model) return {};
 
@@ -278,6 +268,16 @@ DataBind = (function () {
         }
     }
 
+    function bind(el, model, cfg) {
+        if (!el || !model) return;
+        cfg = getBindUnbindConfigDefaults(cfg);
+        // TODO if cfg.children traverse el's tree and bind all children that have the key
+        bindSingleEl(el, model, {
+            dom: cfg.dom,
+            model: cfg.model
+        });
+    }
+
     function unbind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
@@ -286,7 +286,6 @@ DataBind = (function () {
             dom: cfg.dom,
             model: cfg.model
         });
-
     }
 
     return {
