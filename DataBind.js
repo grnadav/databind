@@ -199,11 +199,11 @@ DataBind = (function () {
         deepKey = deepKey[ deepKey.length - 1 ];
         value(el, modelVal);
 
-        if (cfg.watchDom) {
+        if (cfg.dom) {
             bindDom(el, deepModel, deepKey);
         }
 
-        if (cfg.watchModel) {
+        if (cfg.model) {
             bindModel(el, deepModel, deepKey);
         }
     }
@@ -212,18 +212,32 @@ DataBind = (function () {
         if (!el || !model) return;
         cfg = cfg || {};
         cfg = {
-            watchDom: (cfg.watchDom !== undefined) ? cfg.watchDom : true,
-            watchModel: (cfg.watchModel !== undefined) ? cfg.watchModel : true,
-            bindChildren: (cfg.bindChildren !== undefined) ? cfg.bindChildren : true
+            dom: (cfg.dom !== undefined) ? cfg.dom : true,
+            model: (cfg.watchModel !== undefined) ? cfg.model : true,
+            children: (cfg.children !== undefined) ? cfg.children : true
         };
         bindSingleEl(el, model, {
-            watchDom: cfg.watchDom,
-            watchModel: cfg.watchModel
+            dom: cfg.dom,
+            model: cfg.model
         });
     }
 
-    function unbind(el, model) {
+    function unbindSingleEl(el) {
+
+    }
+
+    function unbind(el, model, cfg) {
         if (!el) return;
+        cfg = cfg || {};
+        cfg = {
+            dom: (cfg.dom !== undefined) ? cfg.dom : true,
+            model: (cfg.watchModel !== undefined) ? cfg.model : true,
+            children: (cfg.children !== undefined) ? cfg.children : true
+        };
+        unbindSingleEl(el, model, {
+            dom: cfg.dom,
+            model: cfg.model
+        });
 
     }
 
