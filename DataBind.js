@@ -1,6 +1,7 @@
 DataBind = (function () {
 
     var listenersHash = {};
+    var KEY_PROP = 'data-key';
 
     function changeHandler(ev) {
         console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + value(this));
@@ -154,12 +155,14 @@ DataBind = (function () {
 
     function bindDom(el, deepModel, deepKey) {
         // listen to elem changes -> on change set model with new value
-        var listener = function (ev) {
-            var newVal = value(this);
-            // TODO consider colsuring the model here
-            modelValue(deepModel, deepKey, newVal);
-        };
-        listen(el, listener);
+        var fn = (function(el, deepModel, deepKey, modelValueFn, valueFn) {
+            return function (ev) {
+                var newVal = valueFn(this);
+                // TODO consider colsuring the model here
+                modelValueFn(deepModel, deepKey, newVal);
+            };
+        })(el, deepModel, deepKey, modelValue, value);
+        listen(el, fn);
         // listen again, just to print it out
         // TODO remove this debug calls
         listen(el, changeHandler);
@@ -167,10 +170,17 @@ DataBind = (function () {
 
     function bindModel(el, deepModel, deepKey) {
         // watch model's key -> on change set el's new value
-        WatchJS.watch(deepModel, deepKey, function (key, setOrGet, newVal, oldVal) {
-            // TODO consider colsuring the el here
-            value(el, newVal);
-        });
+        var fn = (function (el, deepModel, deepKey, valueFn) {
+            return function (key, setOrGet, newVal, oldVal) {
+                valueFn(el, newVal);
+            }
+        })(el, deepModel, deepKey, value);
+        WatchJS.watch(deepModel, deepKey, fn);
+    }
+
+    function getDatasetKey(el) {
+        if (!el) return;
+        return el.getAttribute(KEY_PROP);
     }
 
     function bind(el, model, cfg) {
@@ -181,7 +191,7 @@ DataBind = (function () {
             watchModel: (cfg.watchModel !== undefined) ? cfg.watchModel : true
         };
         // extract model's key to watch from el's data-key
-        var key = el.dataset.key;
+        var key = getDatasetKey(el);
         // make sure the key is defined in the model
         if (!keyExists(model, key)) return;
         // update elem from model
@@ -191,7 +201,6 @@ DataBind = (function () {
         deepKey = deepKey[ deepKey.length - 1 ];
         value(el, modelVal);
 
-        var listener;
         if (cfg.watchDom) {
             bindDom(el, deepModel, deepKey);
         }
@@ -203,6 +212,7 @@ DataBind = (function () {
 
     function unbind(el, model) {
         if (!el) return;
+
     }
 
     return {
