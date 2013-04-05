@@ -93,8 +93,7 @@ DataBind = (function () {
         el.addEventListener(evName, fn, false);
     }
 
-    function unlisten(el, fn) {
-        if (!el || !fn) return;
+    function unlistenOne(el, fn) {
         // check if this fn was ever listened to
         var idx = listenersHash[el].indexOf(fn);
         if (!listenersHash[el] || idx === -1) return;
@@ -103,6 +102,22 @@ DataBind = (function () {
 
         var evName = getEventNameForEl(el);
         el.removeEventListener(evName, fn, false);
+    }
+
+    function unlisten(el, fn) {
+        var listeners = listenersHash[el];
+        if (!el || !listeners) return;
+        if (fn) {
+            return unlistenOne(el, fn);
+        }
+        // no fn provided - remove all
+        var i, keys = listeners.keys, key;
+        for (i = 0; i < keys.length; i++) {
+            key = keys[i];
+            if (listeners.hasOwnProperty(key)) {
+                unlistenOne(el, listeners[key]);
+            }
+        }
     }
 
     function keyExists(model, key) {
@@ -155,9 +170,10 @@ DataBind = (function () {
         deepKey = deepKey[ deepKey.length - 1 ];
         value(el, modelVal);
 
+        var listener;
         if (cfg.watchDom) {
             // listen to elem changes -> on change set model with new value
-            var listener = function (ev) {
+            listener = function (ev) {
                 var newVal = value(this);
                 // TODO consider colsuring the model here
                 modelValue(deepModel, deepKey, newVal);
@@ -182,6 +198,7 @@ DataBind = (function () {
     }
 
     return {
-        bind: bind
+        bind: bind,
+        unbind: unbind
     };
 })();
