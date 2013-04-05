@@ -2,11 +2,10 @@ Demo = (function () {
 
     function init() {
         var ids = [ 'in-text', 'textarea', 'in-checkbox', 'in-radio', 'select', 'select-mul', 'div1', 'span1', 'span2' ];
-        var i, el;
+        var i;
 
         for (i = 0; i < ids.length; i++) {
-            el = document.getElementById(ids[i]);
-            DataBind.bind(el, model);
+            bind(ids[i]);
         }
     }
 
@@ -26,8 +25,22 @@ Demo = (function () {
         }
     };
 
+    function bind(id) {
+        console.log('bind:'+id);
+        var el = document.getElementById(id);
+        DataBind.bind(el, model);
+    }
+
+    function unbind(id) {
+        console.log('unbind:'+id);
+        var el = document.getElementById(id);
+        DataBind.unbind(el, model);
+    }
+
     return {
         init: init,
+        bind: bind,
+        unbind: unbind,
         model: model
     };
 })();

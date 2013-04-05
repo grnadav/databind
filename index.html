@@ -5,26 +5,74 @@
     <script src="watch.js"></script>
     <script src="DataBind.js"></script>
     <script src="demo.js"></script>
+
+    <style>
+        * {
+            vertical-align: top;
+        }
+    </style>
 </head>
 <body onload="Demo.init();">
-    <input      data-key="k1.k11" id="in-text" type="text" />
-    <textarea   data-key="k2" id="textarea" rows="5" cols="30"></textarea>
-    <input      data-key="k3" id="in-checkbox" type="checkbox"/>
-    <input      data-key="k4" id="in-radio" type="radio"/>
-    <select     data-key="k5" id="select" name="select">
-        <option value="value1">Value 1</option>
-        <option value="value2" selected>Value 2</option>
-        <option value="value3">Value 3</option>
-    </select>
+    <div>
+        <input type="button" onclick="Demo.bind('in-text');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('in-text');" value="Unbind"/>
+        <input      data-key="k1.k11" id="in-text" type="text" />
+    </div>
 
-    <select     data-key="k6" id="select-mul" multiple="true">
-        <option value="value1">Value 1</option>
-        <option value="value2" selected>Value 2</option>
-        <option value="value3">Value 3</option>
-    </select>
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <textarea   data-key="k2" id="textarea" rows="5" cols="30"></textarea>
+    </div>
 
-    <div        data-key="k7" id="div1">dd</div>
-    <span       data-key="k8" id="span1">ss</span>
-    <span       data-key="k9.k91" id="span2">ss2</span>
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <input      data-key="k3" id="in-checkbox" type="checkbox"/>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <input      data-key="k4" id="in-radio" type="radio"/>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <select     data-key="k5" id="select" name="select">
+            <option value="value1">Value 1</option>
+            <option value="value2" selected>Value 2</option>
+            <option value="value3">Value 3</option>
+        </select>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <select     data-key="k6" id="select-mul" multiple="true">
+            <option value="value1">Value 1</option>
+            <option value="value2" selected>Value 2</option>
+            <option value="value3">Value 3</option>
+        </select>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <div   style="display:inline;"     data-key="k7" id="div1">dd</div>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <span       data-key="k8" id="span1">ss</span>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
+        <span       data-key="k9.k91" id="span2">ss2</span>
+    </div>
 </body>
 </html>
