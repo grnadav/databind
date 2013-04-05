@@ -1,4 +1,7 @@
 DataBind = (function () {
+
+    var listenersHash = {};
+
     function changeHandler(ev) {
         console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + value(this));
     }
@@ -63,14 +66,43 @@ DataBind = (function () {
         return el.addEventListener(ev, fn, false);
     }
 
-    function listen(el, fn) {
-        if (!el || !fn) return;
+    function removeListener(el, ev, fn) {
+
+    }
+
+    function getEventNameForEl(el) {
         if (['checkbox', 'radio', 'select-one', 'select-multiple'].indexOf(el.type) >= 0) {
-            addListener(el, 'change', fn);
+            return 'change';
         }
         if (['text', 'textarea'].indexOf(el.type) >= 0) {
-            addListener(el, 'input', fn);
+            return 'input';
         }
+    }
+
+    function listen(el, fn) {
+        if (!el || !fn) return;
+
+        // save the listener in listeners has for later removal
+        listenersHash[el] = listenersHash[el] || [];
+        // prevent double listening on same fn on same obj
+        if (listenersHash[el].indexOf(fn) > -1) return;
+        // we're safe to add this handler
+        listenersHash[el].push(fn);
+
+        var evName = getEventNameForEl(el);
+        el.addEventListener(evName, fn, false);
+    }
+
+    function unlisten(el, fn) {
+        if (!el || !fn) return;
+        // check if this fn was ever listened to
+        var idx = listenersHash[el].indexOf(fn);
+        if (!listenersHash[el] || idx === -1) return;
+        // remove fn from the hash
+        listenersHash[el].splice(idx, 1);
+
+        var evName = getEventNameForEl(el);
+        el.removeEventListener(evName, fn, false);
     }
 
     function keyExists(model, key) {
@@ -78,7 +110,7 @@ DataBind = (function () {
         var modelDepth = model;
         var i;
 
-        for (i=0; i<splitKey.length; i++) {
+        for (i = 0; i < splitKey.length; i++) {
             if (!modelDepth.hasOwnProperty(splitKey[i])) return false;
             modelDepth = modelDepth[ splitKey[i] ];
         }
@@ -90,7 +122,7 @@ DataBind = (function () {
         var modelDepth = model;
         var i;
 
-        for (i=0; i<splitKey.length-1; i++) {
+        for (i = 0; i < splitKey.length - 1; i++) {
             modelDepth = modelDepth[ splitKey[i] ];
         }
         return modelDepth;
@@ -100,9 +132,9 @@ DataBind = (function () {
         var splitKey = key.split('.');
         var deepModel = getModelDeepKey(model, key);
         if (newVal !== undefined) {
-            deepModel[splitKey[ splitKey.length-1 ]] = newVal;
+            deepModel[splitKey[ splitKey.length - 1 ]] = newVal;
         }
-        return deepModel[splitKey[ splitKey.length-1 ]];
+        return deepModel[splitKey[ splitKey.length - 1 ]];
     }
 
     function bind(el, model, cfg) {
@@ -115,21 +147,22 @@ DataBind = (function () {
         // extract model's key to watch from el's data-key
         var key = el.dataset.key;
         // make sure the key is defined in the model
-        if (!keyExists(model,key)) return;
+        if (!keyExists(model, key)) return;
         // update elem from model
         var modelVal = modelValue(model, key);
         var deepModel = getModelDeepKey(model, key);
         var deepKey = key.split('.');
-        deepKey = deepKey[ deepKey.length-1 ];
+        deepKey = deepKey[ deepKey.length - 1 ];
         value(el, modelVal);
 
         if (cfg.watchDom) {
             // listen to elem changes -> on change set model with new value
-            listen(el, function (ev) {
+            var listener = function (ev) {
                 var newVal = value(this);
                 // TODO consider colsuring the model here
                 modelValue(deepModel, deepKey, newVal);
-            });
+            };
+            listen(el, listener);
             // listen again, just to print it out
             // TODO remove this debug calls
             listen(el, changeHandler);
@@ -137,11 +170,15 @@ DataBind = (function () {
 
         if (cfg.watchModel) {
             // watch model's key -> on change set el's new value
-            WatchJS.watch(deepModel, deepKey, function(key,setOrGet,newVal,oldVal) {
+            WatchJS.watch(deepModel, deepKey, function (key, setOrGet, newVal, oldVal) {
                 // TODO consider colsuring the el here
                 value(el, newVal);
             });
         }
+    }
+
+    function unbind(el, model) {
+        if (!el) return;
     }
 
     return {
