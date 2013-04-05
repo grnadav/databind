@@ -11,7 +11,9 @@ Demo = (function () {
     }
 
     var model = {
-        k1: 'text-k1',
+        k1: {
+            k11: 'text-k1'
+        },
         k2: 'text-k2',
         k3: true,
         k4: true,

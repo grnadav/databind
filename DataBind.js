@@ -122,21 +122,26 @@ DataBind = (function () {
         var deepKey = key.split('.');
         deepKey = deepKey[ deepKey.length-1 ];
         value(el, modelVal);
-        // listen to elem changes -> on change set model with new value
-        listen(el, function (ev) {
-            var newVal = value(this);
-            // TODO consider colsuring the model here
-            modelValue(deepModel, deepKey, newVal);
-        });
-        // listen again, just to print it out
-        // TODO remove this debug calls
-        listen(el, changeHandler);
 
-        // watch model's key -> on change set el's new value
-        WatchJS.watch(deepModel, deepKey, function(key,setOrGet,newVal,oldVal) {
-            // TODO consider colsuring the el here
-            value(el, newVal);
-        });
+        if (cfg.watchDom) {
+            // listen to elem changes -> on change set model with new value
+            listen(el, function (ev) {
+                var newVal = value(this);
+                // TODO consider colsuring the model here
+                modelValue(deepModel, deepKey, newVal);
+            });
+            // listen again, just to print it out
+            // TODO remove this debug calls
+            listen(el, changeHandler);
+        }
+
+        if (cfg.watchModel) {
+            // watch model's key -> on change set el's new value
+            WatchJS.watch(deepModel, deepKey, function(key,setOrGet,newVal,oldVal) {
+                // TODO consider colsuring the el here
+                value(el, newVal);
+            });
+        }
     }
 
     return {
