@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="watch.js"></script>
+    <script src="DataBind.js"></script>
+    <script src="demo.js"></script>
+</head>
+<body onload="Demo.init();">
+    <input      data-key="k1" id="in-text" type="text" />
+    <textarea   data-key="k2" id="textarea" rows="5" cols="30"></textarea>
+    <input      data-key="k3" id="in-checkbox" type="checkbox"/>
+    <input      data-key="k4" id="in-radio" type="radio"/>
+    <select     data-key="k5" id="select" name="select">
+        <option value="value1">Value 1</option>
+        <option value="value2" selected>Value 2</option>
+        <option value="value3">Value 3</option>
+    </select>
+
+    <select     data-key="k6" id="select-mul" multiple="true">
+        <option value="value1">Value 1</option>
+        <option value="value2" selected>Value 2</option>
+        <option value="value3">Value 3</option>
+    </select>
+
+    <div        data-key="k7" id="div1">dd</div>
+    <span       data-key="k8" id="span1">ss</span>
+    <span       data-key="k9.k91" id="span2">ss2</span>
+</body>
+</html>
