@@ -168,7 +168,7 @@ DataBind = (function () {
     }
 
     function unbindDom(el) {
-
+        unlisten(el);
     }
 
     function bindModel(el, deepModel, deepKey) {
@@ -179,6 +179,11 @@ DataBind = (function () {
             }
         })(el, deepModel, deepKey, value);
         WatchJS.watch(deepModel, deepKey, fn);
+    }
+
+    function unbindModel(deepModel, deepKey) {
+        // TODO good chance i need the function to unwatch
+        WatchJS.unwatch(deepModel, deepKey);
     }
 
     function getDatasetKey(el) {
@@ -221,6 +226,7 @@ DataBind = (function () {
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
+        // TODO if cfg.children traverse el's tree and bind all children that have the key
         bindSingleEl(el, model, {
             dom: cfg.dom,
             model: cfg.model
@@ -234,6 +240,7 @@ DataBind = (function () {
     function unbind(el, model, cfg) {
         if (!el) return;
         cfg = getBindUnbindConfigDefaults(cfg);
+        // TODO if cfg.children traverse el's tree and unbind all children that have the key
         unbindSingleEl(el, model, {
             dom: cfg.dom,
             model: cfg.model
