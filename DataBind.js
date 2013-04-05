@@ -208,32 +208,32 @@ DataBind = (function () {
         }
     }
 
-    function bind(el, model, cfg) {
-        if (!el || !model) return;
+    function getBindUnbindConfigDefaults(cfg) {
         cfg = cfg || {};
         cfg = {
             dom: (cfg.dom !== undefined) ? cfg.dom : true,
-            model: (cfg.watchModel !== undefined) ? cfg.model : true,
+            model: (cfg.model !== undefined) ? cfg.model : true,
             children: (cfg.children !== undefined) ? cfg.children : true
         };
+        return cfg;
+    }
+
+    function bind(el, model, cfg) {
+        if (!el || !model) return;
+        cfg = getBindUnbindConfigDefaults(cfg);
         bindSingleEl(el, model, {
             dom: cfg.dom,
             model: cfg.model
         });
     }
 
-    function unbindSingleEl(el) {
+    function unbindSingleEl(el, model, cfg) {
 
     }
 
     function unbind(el, model, cfg) {
         if (!el) return;
-        cfg = cfg || {};
-        cfg = {
-            dom: (cfg.dom !== undefined) ? cfg.dom : true,
-            model: (cfg.watchModel !== undefined) ? cfg.model : true,
-            children: (cfg.children !== undefined) ? cfg.children : true
-        };
+        cfg = getBindUnbindConfigDefaults(cfg);
         unbindSingleEl(el, model, {
             dom: cfg.dom,
             model: cfg.model
