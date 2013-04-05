@@ -158,7 +158,6 @@ DataBind = (function () {
         var fn = (function(el, deepModel, deepKey, modelValueFn, valueFn) {
             return function (ev) {
                 var newVal = valueFn(this);
-                // TODO consider colsuring the model here
                 modelValueFn(deepModel, deepKey, newVal);
             };
         })(el, deepModel, deepKey, modelValue, value);
@@ -166,6 +165,10 @@ DataBind = (function () {
         // listen again, just to print it out
         // TODO remove this debug calls
         listen(el, changeHandler);
+    }
+
+    function unbindDom(el) {
+
     }
 
     function bindModel(el, deepModel, deepKey) {
@@ -183,13 +186,8 @@ DataBind = (function () {
         return el.getAttribute(KEY_PROP);
     }
 
-    function bind(el, model, cfg) {
+    function bindSingleEl(el, model, cfg) {
         if (!el || !model) return;
-        cfg = cfg || {};
-        cfg = {
-            watchDom: (cfg.watchDom !== undefined) ? cfg.watchDom : true,
-            watchModel: (cfg.watchModel !== undefined) ? cfg.watchModel : true
-        };
         // extract model's key to watch from el's data-key
         var key = getDatasetKey(el);
         // make sure the key is defined in the model
@@ -208,6 +206,20 @@ DataBind = (function () {
         if (cfg.watchModel) {
             bindModel(el, deepModel, deepKey);
         }
+    }
+
+    function bind(el, model, cfg) {
+        if (!el || !model) return;
+        cfg = cfg || {};
+        cfg = {
+            watchDom: (cfg.watchDom !== undefined) ? cfg.watchDom : true,
+            watchModel: (cfg.watchModel !== undefined) ? cfg.watchModel : true,
+            bindChildren: (cfg.bindChildren !== undefined) ? cfg.bindChildren : true
+        };
+        bindSingleEl(el, model, {
+            watchDom: cfg.watchDom,
+            watchModel: cfg.watchModel
+        });
     }
 
     function unbind(el, model) {
