@@ -165,6 +165,14 @@ DataBind = (function () {
         listen(el, changeHandler);
     }
 
+    function bindModel(el, deepModel, deepKey) {
+        // watch model's key -> on change set el's new value
+        WatchJS.watch(deepModel, deepKey, function (key, setOrGet, newVal, oldVal) {
+            // TODO consider colsuring the el here
+            value(el, newVal);
+        });
+    }
+
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = cfg || {};
@@ -189,11 +197,7 @@ DataBind = (function () {
         }
 
         if (cfg.watchModel) {
-            // watch model's key -> on change set el's new value
-            WatchJS.watch(deepModel, deepKey, function (key, setOrGet, newVal, oldVal) {
-                // TODO consider colsuring the el here
-                value(el, newVal);
-            });
+            bindModel(el, deepModel, deepKey);
         }
     }
 
