@@ -152,6 +152,19 @@ DataBind = (function () {
         return deepModel[splitKey[ splitKey.length - 1 ]];
     }
 
+    function bindDom(el, deepModel, deepKey) {
+        // listen to elem changes -> on change set model with new value
+        var listener = function (ev) {
+            var newVal = value(this);
+            // TODO consider colsuring the model here
+            modelValue(deepModel, deepKey, newVal);
+        };
+        listen(el, listener);
+        // listen again, just to print it out
+        // TODO remove this debug calls
+        listen(el, changeHandler);
+    }
+
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = cfg || {};
@@ -172,16 +185,7 @@ DataBind = (function () {
 
         var listener;
         if (cfg.watchDom) {
-            // listen to elem changes -> on change set model with new value
-            listener = function (ev) {
-                var newVal = value(this);
-                // TODO consider colsuring the model here
-                modelValue(deepModel, deepKey, newVal);
-            };
-            listen(el, listener);
-            // listen again, just to print it out
-            // TODO remove this debug calls
-            listen(el, changeHandler);
+            bindDom(el, deepModel, deepKey);
         }
 
         if (cfg.watchModel) {
