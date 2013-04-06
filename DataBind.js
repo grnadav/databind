@@ -62,15 +62,6 @@ DataBind = (function () {
         return ( Object.prototype.toString.call(val) === '[object Array]' );
     }
 
-    function addListener(el, ev, fn) {
-        if (!el || !ev || !fn) return;
-        return el.addEventListener(ev, fn, false);
-    }
-
-    function removeListener(el, ev, fn) {
-
-    }
-
     function getEventNameForEl(el) {
         if (['checkbox', 'radio', 'select-one', 'select-multiple'].indexOf(el.type) >= 0) {
             return 'change';
@@ -269,25 +260,33 @@ DataBind = (function () {
         }
     }
 
+    function getElsToBindUnbind(el, cfg) {
+        var res = [el];
+        // if cfg.children traverse el's tree and bind all children that have the key
+        if (cfg.children) {
+            children = el.getElementsByTagName('*');
+            // doing concat like this: elsToBind = res.concat( el.getElementsByTagName('*') );
+            // does not work. it concats an empty NodeList array item
+            for (i=0; i<children.length; i++) {
+                res.push(children[i]);
+            }
+        }
+
+        return res;
+    }
+
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
 
-        bindSingleEl(el, model, {
-            dom: cfg.dom,
-            model: cfg.model
-        });
+        var elsToBind = getElsToBindUnbind(el, cfg);
+        var i;
 
-        // if cfg.children traverse el's tree and bind all children that have the key
-        var children, i;
-        if (cfg.children) {
-            children = el.getElementsByTagName('*');
-            for (i=0; i<children.length; i++) {
-                bindSingleEl(children[i], model, {
-                    dom: cfg.dom,
-                    model: cfg.model
-                });
-            }
+        for (i=0; i<elsToBind.length; i++) {
+            bindSingleEl(elsToBind[i], model, {
+                dom: cfg.dom,
+                model: cfg.model
+            });
         }
     }
 
@@ -295,21 +294,14 @@ DataBind = (function () {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
 
-        unbindSingleEl(el, model, {
-            dom: cfg.dom,
-            model: cfg.model
-        });
+        var elsToBind = getElsToBindUnbind(el, cfg);
+        var i;
 
-        // if cfg.children traverse el's tree and unbind all children that have the key
-        var children, i;
-        if (cfg.children) {
-            children = el.getElementsByTagName('*');
-            for (i=0; i<children.length; i++) {
-                unbindSingleEl(children[i], model, {
-                    dom: cfg.dom,
-                    model: cfg.model
-                });
-            }
+        for (i=0; i<elsToBind.length; i++) {
+            unbindSingleEl(elsToBind[i], model, {
+                dom: cfg.dom,
+                model: cfg.model
+            });
         }
     }
 
