@@ -15,7 +15,7 @@ Works with: IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+
 #### HTML Script TAG
 ```html
 <script src="DataBind.js" type="text/javascript"></script>
-<!-- watch will be global variable window.DataBind -->
+<!-- DataBind will be global variable window.DataBind -->
 ```
 
 #### RequireJS
