@@ -1,4 +1,15 @@
-DataBind = (function () {
+"use strict";
+(function (factory) {
+
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(factory);
+    } else {
+        // Browser globals
+        window.DataBind = factory();
+    }
+
+})(function () {
 
     var listenersHash = {};
     var KEY_PROP = 'data-key';
@@ -261,13 +272,13 @@ DataBind = (function () {
     }
 
     function getElsToBindUnbind(el, cfg) {
-        var res = [el];
+        var res = [el], children, i;
         // if cfg.children traverse el's tree and bind all children that have the key
         if (cfg.children) {
             children = el.getElementsByTagName('*');
             // doing concat like this: elsToBind = res.concat( el.getElementsByTagName('*') );
             // does not work. it concats an empty NodeList array item
-            for (i=0; i<children.length; i++) {
+            for (i = 0; i < children.length; i++) {
                 res.push(children[i]);
             }
         }
@@ -282,7 +293,7 @@ DataBind = (function () {
         var elsToBind = getElsToBindUnbind(el, cfg);
         var i;
 
-        for (i=0; i<elsToBind.length; i++) {
+        for (i = 0; i < elsToBind.length; i++) {
             bindSingleEl(elsToBind[i], model, {
                 dom: cfg.dom,
                 model: cfg.model
@@ -297,7 +308,7 @@ DataBind = (function () {
         var elsToBind = getElsToBindUnbind(el, cfg);
         var i;
 
-        for (i=0; i<elsToBind.length; i++) {
+        for (i = 0; i < elsToBind.length; i++) {
             unbindSingleEl(elsToBind[i], model, {
                 dom: cfg.dom,
                 model: cfg.model
@@ -309,4 +320,4 @@ DataBind = (function () {
         bind: bind,
         unbind: unbind
     };
-})();
+});
