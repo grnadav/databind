@@ -63,3 +63,21 @@ var model = {
 };
 DataBind.bind( $('#id1'), model );
 ```
+
+## Allow binding of entire subtree (by default)
+```html
+<div id="id1">
+    <div>
+        <textarea data-key="k1" rows="5" cols="30"></textarea>    
+    </div>
+    <div data-key="k2" ></div>
+</div>
+```
+
+```javascript
+var model = {
+    k1:  'Some text',
+    k2:  'Some Div'
+};
+DataBind.bind( $('#id1'), model );
+```
