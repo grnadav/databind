@@ -1,7 +1,7 @@
 Demo = (function () {
 
     function init() {
-        var ids = [ 'in-text', 'textarea', 'in-checkbox', 'in-radio', 'select', 'select-mul', 'div1', 'span1', 'span2' ];
+        var ids = [ 'in-text', 'textarea', 'in-checkbox', 'in-radio', 'select', 'select-mul', 'div1', 'span1', 'span2', 'has-children' ];
         var i;
 
         for (i = 0; i < ids.length; i++) {
@@ -22,6 +22,10 @@ Demo = (function () {
         k8: 'text-k4',
         k9: {
             k91: 'v1'
+        },
+        k10: {
+            k101: 'bbbb',
+            k102: 'Deep H1'
         }
     };
 

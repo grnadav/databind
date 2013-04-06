@@ -239,6 +239,7 @@ DataBind = (function () {
 
         // extract model's key to watch from el's data-key
         var key = getDatasetKey(el);
+        if (!key) return {};
         // make sure the key is defined in the model
         var isKeyExists = keyExists(model, key);
         var deepModel = getModelDeepKey(model, key);
@@ -271,21 +272,45 @@ DataBind = (function () {
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
-        // TODO if cfg.children traverse el's tree and bind all children that have the key
+
         bindSingleEl(el, model, {
             dom: cfg.dom,
             model: cfg.model
         });
+
+        // if cfg.children traverse el's tree and bind all children that have the key
+        var children, i;
+        if (cfg.children) {
+            children = el.getElementsByTagName('*');
+            for (i=0; i<children.length; i++) {
+                bindSingleEl(children[i], model, {
+                    dom: cfg.dom,
+                    model: cfg.model
+                });
+            }
+        }
     }
 
     function unbind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
-        // TODO if cfg.children traverse el's tree and unbind all children that have the key
+
         unbindSingleEl(el, model, {
             dom: cfg.dom,
             model: cfg.model
         });
+
+        // if cfg.children traverse el's tree and unbind all children that have the key
+        var children, i;
+        if (cfg.children) {
+            children = el.getElementsByTagName('*');
+            for (i=0; i<children.length; i++) {
+                unbindSingleEl(children[i], model, {
+                    dom: cfg.dom,
+                    model: cfg.model
+                });
+            }
+        }
     }
 
     return {

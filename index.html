@@ -37,7 +37,7 @@
         <input      data-key="k4" id="in-radio" type="radio"/>
     </div>
 
-    <div>
+    <div id="ddd">
         <input type="button" onclick="Demo.bind('select');" value="Bind"/>
         <input type="button" onclick="Demo.unbind('select');" value="Unbind"/>
         <select     data-key="k5" id="select" name="select">
@@ -73,6 +73,20 @@
         <input type="button" onclick="Demo.bind('span2');" value="Bind"/>
         <input type="button" onclick="Demo.unbind('span2');" value="Unbind"/>
         <span       data-key="k9.k91" id="span2">ss2</span>
+    </div>
+
+    <div>
+        <input type="button" onclick="Demo.bind('has-children');" value="Bind"/>
+        <input type="button" onclick="Demo.unbind('has-children');" value="Unbind"/>
+        <div id="has-children">
+            <input      data-key="k10.k101" type="text" />
+            <div>
+                <span>
+                    <h data-key="k10.k102">Deep H</h>
+                </span>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
