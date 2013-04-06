@@ -28,6 +28,10 @@ require("DataBind", function(DataBind){
 ```
 
 # Examples
+
+## Live Demo!
+On CodePen.io - [here](http://codepen.io/grnadav/pen/ptJKg)
+
 ```html
 <textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
 ```
@@ -114,3 +118,14 @@ DataBind.unbind( document.getElementById('id1'), model, {
     children: true // unbind entire element's tree  - does not have to be same as given to 'bind'
 } );
 ```
+
+# Coming up!
+Plans for future release includes:
+* Returning a Watchable with the following functinality:
+    + Allow adding custom watcher for when a change is detected (e.g. DataBind.bind(id, model).watch(myFn); )
+    + Allow removing custom watcher (e.g. DataBind.bind(id, model).unwatch(myFn); )
+    + Allow removing all watchers (e.g. DataBind.bind(id, model).unwatch(); )
+* Other things you request :)
+ 
+# Contributing
+If you wish to help with improving this library, feel free to fork and pull-request
