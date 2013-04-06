@@ -51,3 +51,15 @@ var model = {
 };
 DataBind.bind( document.getElementById('id1'), model );
 ```
+
+## Allow binding to jQuery elements
+```html
+<textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1:  'Some text'
+};
+DataBind.bind( $('#id1'), model );
+```
