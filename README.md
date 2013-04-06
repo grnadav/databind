@@ -28,12 +28,26 @@ require("DataBind", function(DataBind){
 
 # Examples
 ```html
-<textarea   data-key="k2" id="id1" rows="5" cols="30"></textarea>
+<textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
 ```
 
 ```javascript
 var model = {
     k1: 'Some text'
+};
+DataBind.bind( document.getElementById('id1'), model );
+```
+
+## Allow deep key bindings
+```html
+<textarea   data-key="k1.x" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1: {
+        x: 'Some text'
+    }
 };
 DataBind.bind( document.getElementById('id1'), model );
 ```
