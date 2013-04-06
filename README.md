@@ -3,7 +3,7 @@
 ## About
 
 DataBind is a 2-way data binding library.
-It lets you easily bind a DOM element (and optionally its subtree) to a Model (Object).
+It lets you easily bind a DOM element (and optionally its subtree) to a Model (Object) and keep them at sync.
 
 ### Dependencies
 It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)
@@ -27,3 +27,13 @@ require("DataBind", function(DataBind){
 ```
 
 # Examples
+```html
+<textarea   data-key="k2" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1: 'Some text'
+};
+DataBind.bind( document.getElementById('id1'), model );
+```
