@@ -984,6 +984,13 @@
      *                  model:      Boolean - unbind the Model to the DOM, default true
      *                  children:   Boolean - UnBind all children in el's tree, default true
      *              }
+     * @returns Object Watchable {
+     *     watch( WatcherFn ),      // WatcherFn will be called with the event, and this as the elem fire upon
+     *                              // ev.data.key      - the data-bound key on the element
+     *                              // ev.data.oldValue - value before the change
+     *                              // ev.data.newValue - value after the change
+     *     unwatch( [WatcherFn] ),  // not providing the Fn to unwatch removes all watchers
+     * }
      */
     function unbind(el, model, cfg) {
         if (!el || !model) return;
