@@ -6,6 +6,8 @@
  * WORKS WITH:
  * IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+
  *
+ * Version: 0.2.0
+ *
  * FORK:
  * https://github.com/grnadav/databind.git
  */
