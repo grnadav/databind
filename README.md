@@ -138,9 +138,9 @@ var printer = function(ev) {
 };
 watchable.watch( printer );
 // later on...
-watchuble.unwatch( printer );
+watchable.unwatch( printer );
 // or remove all watchers
-watchuble.unwatch();
+watchable.unwatch();
 ```
 
 # Coming up!
