@@ -1,4 +1,4 @@
-# DataBind.js 0.1.1 [Download](https://github.com/grnadav/databind/archive/master.zip)
+# DataBind.js 0.2.0 [Download](https://github.com/grnadav/databind/archive/master.zip)
 
 ## About
 
@@ -122,13 +122,10 @@ DataBind.unbind( document.getElementById('id1'), model, {
 
 # Coming up!
 Plans for future release includes:
-* Returning a Watchable with the following functinality:
-    + Allow adding custom watcher for when a change is detected (e.g. DataBind.bind(id, model).watch(myFn); )
-    + Allow removing custom watcher (e.g. DataBind.bind(id, model).unwatch(myFn); )
-    + Allow removing all watchers (e.g. DataBind.bind(id, model).unwatch(); )
-* Intercorporate watch.js into the code (only it's used functionality?)
+* Remove unused code from intercorporated watch.js code
 * Automate build and minification process
 * Improve demo to enable editing the model and displaying the logs visually
+* More browsers support (IE8, IE7? IE6?!)
 * Other things you request :)
  
 # Contributing
