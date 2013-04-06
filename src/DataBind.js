@@ -428,15 +428,6 @@
         return el;
     }
 
-//    /**
-//     * Debug util that prints info of given element to console
-//     * @private
-//     * @param ev - DomElement to print info for
-//     */
-//    function changeHandler(ev) {
-//        console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + value(this));
-//    }
-
     /**
      * Get\Set value for an element
      * @private
@@ -666,9 +657,6 @@
             };
         })(el, deepModel, deepKey, modelValue, value, getDatasetKey, fireEvent, EVENT_NAME_DOM_CHANGE);
         listen(el, fn);
-        // listen again, just to print it out
-        // TODO remove this debug calls
-        // listen(el, changeHandler);
     }
 
     /**
@@ -836,7 +824,6 @@
         }
     }
 
-
     /**
      * Get list of elements that needs to be bound\unbound
      * @private
@@ -911,7 +898,7 @@
         }
 
         function removeAllWatchFnOnEl(el) {
-            var i, watchFnsClone = this.watchFns.concat();
+            var i, watchFnsClone = watchFns.concat();
             for (i=0; i<watchFnsClone.length; i++) {
                 removeWatchFnOnEl(el, watchFnsClone[i]);
             }
@@ -978,7 +965,11 @@
         }
 
         // pass in only elements that has the key
-        return new Watchable(watchableEls, EVENT_NAME_MODEL_CHANGE, EVENT_NAME_DOM_CHANGE, cfg);
+        var watchable = new Watchable(watchableEls, EVENT_NAME_MODEL_CHANGE, EVENT_NAME_DOM_CHANGE, cfg);
+        // hang it on the element for reference usage in unbind
+        el.watchable = watchable;
+
+        return watchable;
     }
 
     /**
@@ -1013,6 +1004,9 @@
                 model: cfg.model
             });
         }
+
+        // remove all watchers on the watchable
+        el.watchable.unwatch();
     }
 
     return {
