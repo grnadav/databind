@@ -1,3 +1,15 @@
+/**
+ * DEVELOPED BY
+ * NADAV GREENBERG (grnadav)
+ * grnadav@gmail.com
+ *
+ * //WORKS WITH:
+ * //IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+, BESEN, Rhino 1.7+
+ *
+ * FORK:
+ * https://github.com/grnadav/databind.git
+ */
+
 "use strict";
 (function (factory) {
 
