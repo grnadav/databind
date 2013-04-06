@@ -4,12 +4,11 @@
 
 DataBind is a 2-way data binding library.  
 It lets you easily bind a DOM element (and optionally its subtree) to a Model (Object) and keep them at sync.  
-At 2650 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
+At 3039 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
 
 ### Dependencies
 Non what do ever!  
 ~~It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)~~ not needed since 0.1.1 internalized the library
-
 
 ##Compatible with all serious browsers :P
 Works with: IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+
@@ -118,6 +117,30 @@ DataBind.unbind( document.getElementById('id1'), model, {
     model: true, // unbind model to dom changes  - does not have to be same as given to 'bind'
     children: true // unbind entire element's tree  - does not have to be same as given to 'bind'
 } );
+```
+
+## bind returns a Watchable
+```html
+<textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1: 'Some text'
+};
+var watchable = DataBind.bind( document.getElementById('id1'), model);
+var printer = function(ev) {
+    console.log('#' + this.id + 
+                ' ev:' + ev.type + 
+                ' old val:' + ev.data.oldValue +
+                ' new val:' + ev.data.newValue +
+                ' key:' + ev.data.key);
+};
+watchable.watch( printer );
+// later on...
+watchuble.unwatch( printer );
+// or remove all watchers
+watchuble.unwatch();
 ```
 
 # Coming up!
