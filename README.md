@@ -97,3 +97,19 @@ DataBind.bind( document.getElementById('id1'), model, {
     children: true // bind entire element's tree
 } );
 ```
+
+## Unbind whenever you want, whatever you want
+```html
+<textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1: 'Some text'
+};
+DataBind.unbind( document.getElementById('id1'), model, {
+    dom: true, // unbind dom to model changes - does not have to be same as given to 'bind'
+    model: true, // unbind model to dom changes  - does not have to be same as given to 'bind'
+    children: true // unbind entire element's tree  - does not have to be same as given to 'bind'
+} );
+```
