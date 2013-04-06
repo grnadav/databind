@@ -3,7 +3,8 @@
 ## About
 
 DataBind is a 2-way data binding library.
-It lets you easily bind a DOM element (and optionally its subtree) to a Model (Object) and keep them at sync.
+It lets you easily bind a DOM element (and optionally its subtree) to a Model (Object) and keep them at sync.  
+At 1411 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
 
 ### Dependencies
 It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)
