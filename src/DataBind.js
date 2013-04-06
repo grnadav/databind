@@ -24,6 +24,17 @@
 })(function () {
 
     // internalize watch.js 1.3.0 to remove external dependency
+    /**
+     * DEVELOPED BY
+     * GIL LOPES BUENO
+     * gilbueno.mail@gmail.com
+     *
+     * WORKS WITH:
+     * IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+, BESEN, Rhino 1.7+
+     *
+     * FORK:
+     * https://github.com/melanke/Watch.JS
+     */
     var WatchJS = (function () {
 
         var WatchJS = {
