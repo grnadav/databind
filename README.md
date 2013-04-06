@@ -1,4 +1,4 @@
-# DataBind.js 0.1.0 [Download](https://github.com/grnadav/databind/archive/master.zip)
+# DataBind.js 0.1.1 [Download](https://github.com/grnadav/databind/archive/master.zip)
 
 ## About
 
@@ -7,7 +7,8 @@ It lets you easily bind a DOM element (and optionally its subtree) to a Model (O
 At 1411 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
 
 ### Dependencies
-It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)
+Non what do ever
+~~It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)~~ not needed since 0.1.1 internalized the library
 
 
 ##Compatible with all serious browsers :P
