@@ -219,25 +219,6 @@
         return el.getAttribute(KEY_PROP);
     }
 
-    function bindSingleEl(el, model, cfg) {
-        if (!el || !model) return;
-
-        var props = getCommonBindingProps(el, model);
-        if (!props.keyExists) return;
-
-        // update elem from model
-        var modelVal = modelValue(model, props.key);
-        value(el, modelVal);
-
-        if (cfg.dom) {
-            bindDom(el, props.deepModel, props.deepKey);
-        }
-
-        if (cfg.model) {
-            bindModel(el, props.deepModel, props.deepKey);
-        }
-    }
-
     function getBindUnbindConfigDefaults(cfg) {
         cfg = cfg || {};
         cfg = {
@@ -268,6 +249,46 @@
         }
     }
 
+
+    /**
+     * Bind a single elem. to the model
+     * @private
+     * @param el - DomElement to bind
+     * @param model - Model to bind to
+     * @param cfg - Object {
+     *                  dom:        Boolean - bind the DOM to the model, default true
+     *                  model:      Boolean - bind the Model to the DOM, default true
+     *              }
+     */
+    function bindSingleEl(el, model, cfg) {
+        if (!el || !model) return;
+
+        var props = getCommonBindingProps(el, model);
+        if (!props.keyExists) return;
+
+        // update elem from model
+        var modelVal = modelValue(model, props.key);
+        value(el, modelVal);
+
+        if (cfg.dom) {
+            bindDom(el, props.deepModel, props.deepKey);
+        }
+
+        if (cfg.model) {
+            bindModel(el, props.deepModel, props.deepKey);
+        }
+    }
+
+    /**
+     * Unbind a single elem. from the model
+     * @private
+     * @param el - DomElement to unbind
+     * @param model - Model to unbind from
+     * @param cfg - Object {
+     *                  dom:        Boolean - bind the DOM to the model, default true
+     *                  model:      Boolean - bind the Model to the DOM, default true
+     *              }
+     */
     function unbindSingleEl(el, model, cfg) {
         if (!el || !model) return;
 
@@ -283,6 +304,16 @@
         }
     }
 
+
+    /**
+     * Get list of elements that needs to be bound\unbound
+     * @private
+     * @param el - head elem.
+     * @param cfg - Object {
+     *                  children:   Boolean - Bind all children in el's tree, default true
+     *              }
+     * @returns {Array} - List of elems.
+     */
     function getElsToBindUnbind(el, cfg) {
         var res = [el], children, i;
         // if cfg.children traverse el's tree and bind all children that have the key
@@ -298,6 +329,20 @@
         return res;
     }
 
+
+    // **************************** PUBLIC METHODS **************************** //
+
+    /**
+     * Bind element(s) who declare data-key to the model's key
+     * @public
+     * @param el - DomElement to bind
+     * @param model - Object data model
+     * @param cfg - Object {
+     *                  dom:        Boolean - bind the DOM to the model, default true
+     *                  model:      Boolean - bind the Model to the DOM, default true
+     *                  children:   Boolean - Bind all children in el's tree, default true
+     *              }
+     */
     function bind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
@@ -313,6 +358,17 @@
         }
     }
 
+    /**
+     * UnBind element(s) who declare data-key to the model's key
+     * @public
+     * @param el - DomElement to unbind
+     * @param model - Object data model
+     * @param cfg - Object {
+     *                  dom:        Boolean - unbind the DOM to the model, default true
+     *                  model:      Boolean - unbind the Model to the DOM, default true
+     *                  children:   Boolean - UnBind all children in el's tree, default true
+     *              }
+     */
     function unbind(el, model, cfg) {
         if (!el || !model) return;
         cfg = getBindUnbindConfigDefaults(cfg);
