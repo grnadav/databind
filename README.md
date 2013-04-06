@@ -81,3 +81,19 @@ var model = {
 };
 DataBind.bind( $('#id1'), model );
 ```
+
+## Confiureable binding
+```html
+<textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1: 'Some text'
+};
+DataBind.bind( document.getElementById('id1'), model, {
+    dom: true, // bind dom to model changes
+    model: true, // bind model to dom changes
+    children: true // bind entire element's tree
+} );
+```
