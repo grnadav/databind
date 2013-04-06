@@ -24,12 +24,29 @@
 })(function () {
 
     var listenersHash = {};
+
+    /**
+     * Key property to look for on the elements for a key to bind to
+     * @type {string}
+     */
     var KEY_PROP = 'data-key';
 
+    /**
+     * Debug util that prints info of given element to console
+     * @private
+     * @param ev - DomElement to print info for
+     */
     function changeHandler(ev) {
         console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + value(this));
     }
 
+    /**
+     * Get\Set value for an element
+     * @private
+     * @param el - DomElement to get\set value of
+     * @param newVal - Optional - new value to set on the el.
+     * @returns (new) value of the element
+     */
     function value(el, newVal) {
         if (!el) return undefined;
         var isSetter = (newVal !== undefined);
@@ -81,10 +98,22 @@
         return el.innerText;
     }
 
+    /**
+     * General purpose util that tells if a given input is an Array
+     * @private
+     * @param val - value to examine
+     * @returns {boolean} array or not
+     */
     function isArray(val) {
         return ( Object.prototype.toString.call(val) === '[object Array]' );
     }
 
+    /**
+     * Get the event name that the element fires then it changes value
+     * @private
+     * @param el DomElement to get event name for
+     * @returns {string} - event name
+     */
     function getEventNameForEl(el) {
         if (['checkbox', 'radio', 'select-one', 'select-multiple'].indexOf(el.type) >= 0) {
             return 'change';
@@ -94,6 +123,12 @@
         }
     }
 
+    /**
+     * Get a unique hash key for an Object or fetch previously given one to it
+     * @private
+     * @param el - DomElement to give hashkey to
+     * @returns String - hash key of this element
+     */
     function getOrGenElHashkey(el) {
         if (!el.hashkey) {
             el.hashkey = Date.now() + Math.floor(Math.random() * 100000);
@@ -102,6 +137,12 @@
         return el.hashkey;
     }
 
+    /**
+     * Listen to value changes on given element and invoke given function
+     * @private
+     * @param el - DomElement to listen to
+     * @param fn - Function to invoke if value changes on the el
+     */
     function listen(el, fn) {
         if (!el || !fn) return;
 
@@ -117,6 +158,12 @@
         el.addEventListener(evName, fn, false);
     }
 
+    /**
+     * Unlisten to dom changes of a given function, previously listened to
+     * @private
+     * @param el - DomElement to unlisten
+     * @param fn - Function to unlisten to
+     */
     function unlistenOne(el, fn) {
         // check if this fn was ever listened to
         var hashkey = getOrGenElHashkey(el);
