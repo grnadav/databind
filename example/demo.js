@@ -29,11 +29,21 @@ Demo = (function () {
         }
     };
 
+    /**
+     * Debug util that prints info of given element to console
+     * @private
+     * @param ev - DomElement to print info for
+     */
+    function changeHandler(ev) {
+        console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + ev.data.newValue);
+    }
+
     function bind(id) {
         console.log('bind:'+id);
         //        var el = document.getElementById(id);
         var el = $('#'+id);
-        DataBind.bind(el, model);
+        var watchable = DataBind.bind(el, model);
+        watchable.watch(changeHandler);
     }
 
     function unbind(id) {
