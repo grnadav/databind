@@ -32,6 +32,27 @@
     var KEY_PROP = 'data-key';
 
     /**
+     * Test if element is a jQuery element
+     * @private
+     * @param el - element to test
+     * @return {boolean} jquery element or not
+     */
+    function isJQueryEl(el) {
+        return (el && window.jQuery && el instanceof window.jQuery);
+    }
+
+    /**
+     * Get a simple DomElement from a possibly jQuery wrapped element
+     * @private
+     * @param el - DomElement\jQueryDomElement to get the simple one from
+     * @returns DomElement simple
+     */
+    function getBareDomElement(el) {
+        if (isJQueryEl(el)) return el[0];
+        return el;
+    }
+
+    /**
      * Debug util that prints info of given element to console
      * @private
      * @param ev - DomElement to print info for
@@ -465,6 +486,14 @@
      */
     function bind(el, model, cfg) {
         if (!el || !model) return;
+
+        // safe jQuery stripping
+        var simpleEl = getBareDomElement(el);
+        if (simpleEl !== el) {
+            arguments[0] = simpleEl;
+            return bind.apply(this, arguments);
+        }
+
         cfg = getBindUnbindConfigDefaults(cfg);
 
         var elsToBind = getElsToBindUnbind(el, cfg);
@@ -491,6 +520,14 @@
      */
     function unbind(el, model, cfg) {
         if (!el || !model) return;
+
+        // safe jQuery stripping
+        var simpleEl = getBareDomElement(el);
+        if (simpleEl !== el) {
+            arguments[0] = simpleEl;
+            return unbind.apply(this, arguments);
+        }
+
         cfg = getBindUnbindConfigDefaults(cfg);
 
         var elsToBind = getElsToBindUnbind(el, cfg);

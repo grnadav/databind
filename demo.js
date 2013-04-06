@@ -31,13 +31,15 @@ Demo = (function () {
 
     function bind(id) {
         console.log('bind:'+id);
-        var el = document.getElementById(id);
+        //        var el = document.getElementById(id);
+        var el = $('#'+id);
         DataBind.bind(el, model);
     }
 
     function unbind(id) {
         console.log('unbind:'+id);
-        var el = document.getElementById(id);
+//        var el = document.getElementById(id);
+        var el = $('#'+id);
         DataBind.unbind(el, model);
     }
 
