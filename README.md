@@ -125,6 +125,9 @@ Plans for future release includes:
     + Allow adding custom watcher for when a change is detected (e.g. DataBind.bind(id, model).watch(myFn); )
     + Allow removing custom watcher (e.g. DataBind.bind(id, model).unwatch(myFn); )
     + Allow removing all watchers (e.g. DataBind.bind(id, model).unwatch(); )
+* Intercorporate watch.js into the code (only it's used functionality?)
+* Automate build and minification process
+* Improve demo to enable editing the model and displaying the logs visually
 * Other things you request :)
  
 # Contributing
