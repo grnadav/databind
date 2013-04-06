@@ -129,14 +129,15 @@
         el.removeEventListener(evName, fn, false);
     }
 
-    function unlisten(el, fn) {
+    /**
+     * Unlisten to DOM changes
+     * @private
+     * @param el - DomElement to unbind from dom
+     */
+    function unlisten(el) {
         var hashkey = getOrGenElHashkey(el);
         var listeners = listenersHash[hashkey];
         if (!el || !listeners) return;
-        if (fn) {
-            return unlistenOne(el, fn);
-        }
-        // no fn provided - remove all
         var listenersClone = listeners.concat();
         var i, len = listenersClone.length;
         for (i = 0; i < len; i++) {
@@ -144,6 +145,13 @@
         }
     }
 
+    /**
+     * Check if a key exists in the model object
+     * @private
+     * @param model - Obejct - data model to test
+     * @param key - key to test, can be deep key (e.g. a.b.c)
+     * @returns {boolean} - exists or not
+     */
     function keyExists(model, key) {
         var splitKey = key.split('.');
         var modelDepth = model;
@@ -156,6 +164,13 @@
         return true;
     }
 
+    /**
+     * Get the value of a deep key from a model
+     * @private
+     * @param model - Obejct - Data model
+     * @param key - String - key to fetch. can be deep key (e.g. a.b.c)
+     * @returns The value of the given key on the model
+     */
     function getModelDeepKey(model, key) {
         var splitKey = key.split('.');
         var modelDepth = model;
@@ -167,6 +182,14 @@
         return modelDepth;
     }
 
+    /**
+     * Get\Set a value for a given key on the model
+     * @private
+     * @param model - Object data model
+     * @param key - String - key on the model. can be deep key (e.g. a.b.c)
+     * @param newVal - Optional Any - new value to set for the key
+     * @returns The (new) value of the given key on the model
+     */
     function modelValue(model, key, newVal) {
         var splitKey = key.split('.');
         var deepModel = getModelDeepKey(model, key);
