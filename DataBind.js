@@ -176,6 +176,13 @@
         return deepModel[splitKey[ splitKey.length - 1 ]];
     }
 
+    /**
+     * Bind a Dom element so when it's value changes it will change the given model's key's value
+     * @private
+     * @param el - DomElement to bind (listen to changes on)
+     * @param deepModel - Object data model to update when dom's value change
+     * @param deepKey - String key on model to update
+     */
     function bindDom(el, deepModel, deepKey) {
         // listen to elem changes -> on change set model with new value
         var fn = (function (el, deepModel, deepKey, modelValueFn, valueFn) {
@@ -190,10 +197,23 @@
         listen(el, changeHandler);
     }
 
+    /**
+     * Unbind an element from dom binding, so it won't notify on value changes on the Dom element
+     * Unbinds all previously attached functions
+     * @private
+     * @param el - DomElement to unbind
+     */
     function unbindDom(el) {
         unlisten(el);
     }
 
+    /**
+     * Bind a model and key to an element, so when the model changes, the value of the key will too
+     * @private
+     * @param el - DomElement - elem to set the value when changes
+     * @param deepModel - Object - Data model to bind to
+     * @param deepKey - String - Key to bind to
+     */
     function bindModel(el, deepModel, deepKey) {
         // watch model's key -> on change set el's new value
         var fn = (function (el, deepModel, deepKey, valueFn) {
@@ -204,6 +224,12 @@
         WatchJS.watch(deepModel, deepKey, fn);
     }
 
+    /**
+     * Unbind all previous functions between the model and key
+     * @private
+     * @param deepModel - Object - Data model to unbind from
+     * @param deepKey - String - Key to unbind
+     */
     function unbindModel(deepModel, deepKey) {
         // TODO not use internal impl of watch.js - deepModel.watchers[deepKey]
         var watchers = deepModel.watchers[deepKey];
@@ -211,14 +237,25 @@
         for (i = 0; i < watchers.length; i++) {
             WatchJS.unwatch(deepModel, deepKey, watchers[i]);
         }
-
     }
 
+    /**
+     * Get the key from the element
+     * @private
+     * @param el - DomElement to extract from
+     * @returns {string} - key or null if not found
+     */
     function getDatasetKey(el) {
         if (!el) return;
         return el.getAttribute(KEY_PROP);
     }
 
+    /**
+     * Bind and Unbind have common config objects, with same defaults, get those from cfg provided
+     * @private
+     * @param cfg - Object - base config provided
+     * @returns {dom: Boolean, model: Object, children: Boolean}
+     */
     function getBindUnbindConfigDefaults(cfg) {
         cfg = cfg || {};
         cfg = {
@@ -229,6 +266,19 @@
         return cfg;
     }
 
+
+    /**
+     * Get common values need both to binding and unbinding
+     * @private
+     * @param el - DomElement being inspected
+     * @param model - Object data model being inspected
+     * @returns Object {
+     *              key:        String  - key of elem. to bind to model
+     *              deepKey:    String  - if key is deep (e.g. k.x.f) then return deepest part (f)
+     *              deepModel:  Object  - return the deepest path of the object where deepKey is an attribute
+     *              keyExists:  Boolean - Does elem. contain the key attribute
+     *          }
+     */
     function getCommonBindingProps(el, model) {
         if (!el || !model) return {};
 
