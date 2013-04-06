@@ -398,6 +398,8 @@
     // END OF WatchJS 1.3.0
 
     var listenersHash = {};
+    var EVENT_NAME_MODEL_CHANGE = 'databind-model-change';
+    var EVENT_NAME_DOM_CHANGE = 'databind-dom-change';
 
     /**
      * Key property to look for on the elements for a key to bind to
@@ -426,14 +428,14 @@
         return el;
     }
 
-    /**
-     * Debug util that prints info of given element to console
-     * @private
-     * @param ev - DomElement to print info for
-     */
-    function changeHandler(ev) {
-        console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + value(this));
-    }
+//    /**
+//     * Debug util that prints info of given element to console
+//     * @private
+//     * @param ev - DomElement to print info for
+//     */
+//    function changeHandler(ev) {
+//        console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + value(this));
+//    }
 
     /**
      * Get\Set value for an element
@@ -650,16 +652,23 @@
      */
     function bindDom(el, deepModel, deepKey) {
         // listen to elem changes -> on change set model with new value
-        var fn = (function (el, deepModel, deepKey, modelValueFn, valueFn) {
+        var fn = (function (el, deepModel, deepKey, modelValueFn, valueFn, getDatasetKeyFn, fireEventFn, eventNameDomChange) {
             return function (ev) {
                 var newVal = valueFn(this);
+                var key = getDatasetKeyFn(this);
+                var oldValue = modelValueFn(deepModel, deepKey);
                 modelValueFn(deepModel, deepKey, newVal);
+                fireEventFn(eventNameDomChange, this, {
+                    key: key,
+                    oldValue: oldValue,
+                    newValue: newVal
+                });
             };
-        })(el, deepModel, deepKey, modelValue, value);
+        })(el, deepModel, deepKey, modelValue, value, getDatasetKey, fireEvent, EVENT_NAME_DOM_CHANGE);
         listen(el, fn);
         // listen again, just to print it out
         // TODO remove this debug calls
-        listen(el, changeHandler);
+        // listen(el, changeHandler);
     }
 
     /**
@@ -681,11 +690,17 @@
      */
     function bindModel(el, deepModel, deepKey) {
         // watch model's key -> on change set el's new value
-        var fn = (function (el, deepModel, deepKey, valueFn) {
+        var fn = (function (el, deepModel, deepKey, valueFn, fireEventFn, getDatasetKeyFn, eventNameModelChange) {
             return function (key, setOrGet, newVal, oldVal) {
+                var key = getDatasetKeyFn(el);
                 valueFn(el, newVal);
+                fireEventFn(eventNameModelChange, el, {
+                    key: key,
+                    oldValue: oldVal,
+                    newValue: newVal
+                });
             }
-        })(el, deepModel, deepKey, value);
+        })(el, deepModel, deepKey, value, fireEvent, getDatasetKey, EVENT_NAME_MODEL_CHANGE);
         WatchJS.watch(deepModel, deepKey, fn);
     }
 
@@ -776,10 +791,10 @@
      *              }
      */
     function bindSingleEl(el, model, cfg) {
-        if (!el || !model) return;
+        if (!el || !model) return false;
 
         var props = getCommonBindingProps(el, model);
-        if (!props.keyExists) return;
+        if (!props.keyExists) return false;
 
         // update elem from model
         var modelVal = modelValue(model, props.key);
@@ -792,6 +807,8 @@
         if (cfg.model) {
             bindModel(el, props.deepModel, props.deepKey);
         }
+
+        return true;
     }
 
     /**
@@ -844,8 +861,84 @@
         return res;
     }
 
+    /**
+     * Fire a custom event
+     * @private
+     * @param name - event name
+     * @param el - target element
+     * @param data - data to hang to the event
+     */
+    function fireEvent(name, el, data) {
+        //Ready: create a generic event
+        var evt = document.createEvent("Events");
+        //Aim: initialize it to be the event we want
+        evt.initEvent(name, true, true); //true for can bubble, true for cancelable
+        // attache data to event
+        evt.data = data;
+        //FIRE!
+        el.dispatchEvent(evt);
+    }
 
     // **************************** PUBLIC METHODS **************************** //
+
+    function Watchable(els, eventNameModelChange, eventNameDomChange, cfg) {
+        var watchFns = [];
+
+        function addWatchFnOnEl(el, fn) {
+            watchFns.push(fn);
+
+            if (cfg.dom) {
+                el.addEventListener(eventNameDomChange, fn, false);
+            }
+
+            if (cfg.model) {
+                el.addEventListener(eventNameModelChange, fn, false);
+            }
+        }
+
+        function removeWatchFnOnEl(el, fn) {
+            var idx = watchFns.indexOf(fn);
+            if (idx === -1) return;
+            watchFns.splice(idx, 1);
+
+            if (cfg.dom) {
+                el.removeEventListener(EVENT_NAME_DOM_CHANGE, fn, false);
+            }
+
+            if (cfg.model) {
+                el.removeEventListener(EVENT_NAME_MODEL_CHANGE, fn, false);
+            }
+        }
+
+        function removeAllWatchFnOnEl(el) {
+            var i, watchFnsClone = this.watchFns.concat();
+            for (i=0; i<watchFnsClone.length; i++) {
+                removeWatchFnOnEl(el, watchFnsClone[i]);
+            }
+        }
+
+        function watch(fn) {
+            var i;
+            for (i=0; i<els.length; i++) {
+                addWatchFnOnEl(els[i], fn);
+            }
+        }
+
+        function unwatch(fn) {
+            var i, removeFn = removeWatchFnOnEl;
+            if (fn === undefined) {
+                removeFn = removeAllWatchFnOnEl;
+            }
+            for (i=0; i<els.length; i++) {
+                removeFn(els[i], fn);
+            }
+        }
+
+        return {
+            watch: watch,
+            unwatch: unwatch
+        };
+    }
 
     /**
      * Bind element(s) who declare data-key to the model's key
@@ -873,12 +966,19 @@
         var elsToBind = getElsToBindUnbind(el, cfg);
         var i;
 
+        var result, watchableEls = [];
         for (i = 0; i < elsToBind.length; i++) {
-            bindSingleEl(elsToBind[i], model, {
+            result = bindSingleEl(elsToBind[i], model, {
                 dom: cfg.dom,
                 model: cfg.model
             });
+            if (result) {
+                watchableEls.push(elsToBind[i]);
+            }
         }
+
+        // pass in only elements that has the key
+        return new Watchable(watchableEls, EVENT_NAME_MODEL_CHANGE, EVENT_NAME_DOM_CHANGE, cfg);
     }
 
     /**
