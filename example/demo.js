@@ -32,7 +32,7 @@ Demo = (function () {
                 buildModel(subcontainer, innerModel[key], prefix);
                 container.append(subcontainer);
             } else {
-                subcontainer.append($('<span></span>').html(prefix));
+                subcontainer.append($('<span></span>').html('key:'+prefix).addClass('key'));
                 var input = $('<input type="text"/>').val(innerModel[key]).attr('data-key', prefix);
                 DataBind.bind(input, model);
                 subcontainer.append(input);
