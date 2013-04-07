@@ -7,7 +7,7 @@ It lets you easily bind a DOM element (and optionally its subtree) to a Model (O
 At 3039 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
 
 ### Dependencies
-Non what do ever!  
+Non what so ever!  
 ~~It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)~~ not needed since 0.1.1 internalized the library
 
 ##Compatible with all serious browsers :P
@@ -138,9 +138,9 @@ var printer = function(ev) {
 };
 watchable.watch( printer );
 // later on...
-watchuble.unwatch( printer );
+watchable.unwatch( printer );
 // or remove all watchers
-watchuble.unwatch();
+watchable.unwatch();
 ```
 
 # Coming up!
