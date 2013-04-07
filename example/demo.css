@@ -1,0 +1,53 @@
+body, html {
+    padding: 0;
+    margin: 0;
+    background-color: #444;
+    color: #eee;
+    font-family: arial;
+}
+
+* {
+    vertical-align: top;
+}
+
+h2 {
+    text-align: center;
+    text-shadow: 0px 2px black;
+    font-weight: normal;
+    margin: 10px 0;
+}
+
+.key {
+    width: 118px;
+    display: inline-block;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.top {
+    padding: 10px;
+}
+
+.elements, .model {
+    width: 49%;
+    display: inline-block;
+}
+
+.elements {
+    border-right: 1px solid #222;
+}
+
+.bottom {
+    border: 1px solid black;
+    height: 150px;
+    margin: 10px;
+    background: #222;
+    color: #f1da36;
+    font-family: "Lucida Console";
+    padding: 10px;
+    overflow: scroll;
+}
+
+
+
+

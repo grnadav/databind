@@ -6,7 +6,43 @@ Demo = (function () {
 
         for (i = 0; i < ids.length; i++) {
             bind(ids[i]);
+            attachBindUnbindHandlers(ids[i]);
         }
+
+        buildModel($('.model'), model);
+    }
+
+    function attachBindUnbindHandlers(id) {
+        var buttons = $('[name="'+id+'"]'); // 2 elems. first is 'bind', second 'unbind'
+        $(buttons[0]).on('click', function() {
+            bind(id);
+        });
+        $(buttons[1]).on('click', function() {
+            unbind(id);
+        });
+    }
+
+    function buildModel(container, innerModel, keyPrefix) {
+        var key;
+        var subcontainer, prefix;
+        for (key in innerModel) {
+            prefix = keyPrefix ? keyPrefix + '.' + key : key;
+            subcontainer = $('<div></div>');
+            if ($.isPlainObject(innerModel[key])) {
+                buildModel(subcontainer, innerModel[key], prefix);
+                container.append(subcontainer);
+            } else {
+                subcontainer.append($('<span></span>').html(prefix));
+                var input = $('<input type="text"/>').val(innerModel[key]).attr('data-key', prefix);
+                DataBind.bind(input, model);
+                subcontainer.append(input);
+                container.append(subcontainer);
+            }
+        }
+    }
+
+    function modelItemAppender(container, model, key) {
+
     }
 
     var model = {
@@ -35,11 +71,11 @@ Demo = (function () {
      * @param ev - DomElement to print info for
      */
     function changeHandler(ev) {
-        console.log('#' + this.id + ' ev:' + ev.type + ' new val:' + ev.data.newValue);
+        log('#' + this.id + ' ev:' + ev.type + ' new val:' + ev.data.newValue);
     }
 
     function bind(id) {
-        console.log('bind:'+id);
+        log('bind:'+id);
         //        var el = document.getElementById(id);
         var el = $('#'+id);
         var watchable = DataBind.bind(el, model);
@@ -47,10 +83,18 @@ Demo = (function () {
     }
 
     function unbind(id) {
-        console.log('unbind:'+id);
+        log('unbind:'+id);
 //        var el = document.getElementById(id);
         var el = $('#'+id);
         DataBind.unbind(el, model);
+    }
+
+    function log(text) {
+        var bottom = $('.bottom');
+        bottom.append($('<div class="log-line"></div>').html(text));
+        bottom.animate({
+            scrollTop: bottom[0].scrollHeight
+        }, 500);
     }
 
     return {

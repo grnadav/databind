@@ -2,91 +2,113 @@
 <html>
 <head>
     <title></title>
-    <script src="../src/DataBind.min.js"></script>
+    <meta charset="utf-8">
+    <script src="../src/DataBind.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="demo.css">
     <script src="demo.js"></script>
-
-    <style>
-        * {
-            vertical-align: top;
-        }
-    </style>
 </head>
 <body onload="Demo.init();">
-    <div>
-        <input type="button" onclick="Demo.bind('in-text');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('in-text');" value="Unbind"/>
-        <input      data-key="k1.k11" id="in-text" type="text" />
-    </div>
 
-    <div>
-        <input type="button" onclick="Demo.bind('textarea');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('textarea');" value="Unbind"/>
-        <textarea   data-key="k2" id="textarea" rows="5" cols="30"></textarea>
-    </div>
+    <div class="top">
 
-    <div>
-        <input type="button" onclick="Demo.bind('in-checkbox');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('in-checkbox');" value="Unbind"/>
-        <input      data-key="k3" id="in-checkbox" type="checkbox"/>
-    </div>
+        <div class="elements">
+            <h2>Elements</h2>
 
-    <div>
-        <input type="button" onclick="Demo.bind('in-radio');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('in-radio');" value="Unbind"/>
-        <input      data-key="k4" id="in-radio" type="radio"/>
-    </div>
-
-    <div id="ddd">
-        <input type="button" onclick="Demo.bind('select');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('select');" value="Unbind"/>
-        <select     data-key="k5" id="select" name="select">
-            <option value="value1">Value 1</option>
-            <option value="value2" selected>Value 2</option>
-            <option value="value3">Value 3</option>
-        </select>
-    </div>
-
-    <div>
-        <input type="button" onclick="Demo.bind('select-mul');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('select-mul');" value="Unbind"/>
-        <select     data-key="k6" id="select-mul" multiple="true">
-            <option value="value1">Value 1</option>
-            <option value="value2" selected>Value 2</option>
-            <option value="value3">Value 3</option>
-        </select>
-    </div>
-
-    <div>
-        <input type="button" onclick="Demo.bind('div1');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('div1');" value="Unbind"/>
-        <div   style="display:inline;"     data-key="k7" id="div1">dd</div>
-    </div>
-
-    <div>
-        <input type="button" onclick="Demo.bind('span1');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('span1');" value="Unbind"/>
-        <span       data-key="k8" id="span1">ss</span>
-    </div>
-
-    <div>
-        <input type="button" onclick="Demo.bind('span2');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('span2');" value="Unbind"/>
-        <span       data-key="k9.k91" id="span2">ss2</span>
-    </div>
-
-    <div>
-        <input type="button" onclick="Demo.bind('has-children');" value="Bind"/>
-        <input type="button" onclick="Demo.unbind('has-children');" value="Unbind"/>
-        <div id="has-children">
-            <input      data-key="k10.k101" type="text" />
             <div>
-                <span>
-                    <h data-key="k10.k102">Deep H</h>
-                </span>
+                <span class="key">key: k1.k11</span>
+                <input type="button" name="in-text" value="Bind"/>
+                <input type="button" name="in-text" value="Unbind"/>
+                <input      data-key="k1.k11" id="in-text" type="text" />
+            </div>
+
+            <div>
+                <span class="key">key: k2</span>
+                <input type="button" name="textarea" value="Bind"/>
+                <input type="button" name="textarea" value="Unbind"/>
+                <textarea   data-key="k2" id="textarea" rows="5" cols="30"></textarea>
+            </div>
+
+            <div>
+                <span class="key">key: k3</span>
+                <input type="button" name="in-checkbox" value="Bind"/>
+                <input type="button" name="in-checkbox" value="Unbind"/>
+                <input      data-key="k3" id="in-checkbox" type="checkbox"/>
+            </div>
+
+            <div>
+                <span class="key">key: k4</span>
+                <input type="button" name="in-radio" value="Bind"/>
+                <input type="button" name="in-radio" value="Unbind"/>
+                <input      data-key="k4" id="in-radio" type="radio"/>
+            </div>
+
+            <div id="ddd">
+                <span class="key">key: k5</span>
+                <input type="button" name="select" value="Bind"/>
+                <input type="button" name="select" value="Unbind"/>
+                <select     data-key="k5" id="select" name="select">
+                    <option value="value1">Value 1</option>
+                    <option value="value2" selected>Value 2</option>
+                    <option value="value3">Value 3</option>
+                </select>
+            </div>
+
+            <div>
+                <span class="key">key: k6</span>
+                <input type="button" name="select-mul" value="Bind"/>
+                <input type="button" name="select-mul" value="Unbind"/>
+                <select     data-key="k6" id="select-mul" multiple="true">
+                    <option value="value1">Value 1</option>
+                    <option value="value2" selected>Value 2</option>
+                    <option value="value3">Value 3</option>
+                </select>
+            </div>
+
+            <div>
+                <span class="key">key: k7</span>
+                <input type="button" name="div1" value="Bind"/>
+                <input type="button" name="div1" value="Unbind"/>
+                <div   style="display:inline;"     data-key="k7" id="div1">dd</div>
+            </div>
+
+            <div>
+                <span class="key">key: k8</span>
+                <input type="button" name="span1" value="Bind"/>
+                <input type="button" name="span1" value="Unbind"/>
+                <span       data-key="k8" id="span1">ss</span>
+            </div>
+
+            <div>
+                <span class="key">key: k9.k91</span>
+                <input type="button" name="span2" value="Bind"/>
+                <input type="button" name="span2" value="Unbind"/>
+                <span       data-key="k9.k91" id="span2">ss2</span>
+            </div>
+
+            <div>
+                <input type="button" name="has-children" value="Bind"/>
+                <input type="button" name="has-children" value="Unbind"/>
+                <div id="has-children">
+                    <span class="key">key: k10.k101</span>
+                    <input      data-key="k10.k101" type="text" />
+                    <div>
+                        <span>
+                            <span class="key">key: k10.k102</span>
+                            <h data-key="k10.k102">Deep H</h>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="model"> <h2>Model</h2> <!-- filled dynamically --> </div>
+
+    </div>
+
+    <h2>Console</h2>
+    <div class="bottom">
+        <!-- filled dynamically -->
     </div>
 </body>
 </html>
