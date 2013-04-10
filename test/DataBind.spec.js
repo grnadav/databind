@@ -111,10 +111,10 @@ describe("DataBind", function() {
             model.k1 = 'value2';
             expect( $(elem).val() ).toBe( 'value2' );
 
-            $(elem).val('value2');
+            $(elem).val('value3');
             // simulate as if the change was a user input
             fireEvent(elem, 'change');
-            expect( model.k1 ).toBe( 'value2' );
+            expect( model.k1 ).toBe( 'value3' );
         });
 
         it("should select with multi-select be 2-way bound", function() {
@@ -133,6 +133,33 @@ describe("DataBind", function() {
             expect( isArrayEqual(model.k1, ['value3'])).toBe(true);
         });
 
+        it("should div (block el) be 1-way bound as it has no user input", function() {
+            var elem = document.getElementById('div1');
+            $(elem).attr('data-key', 'k1');
+            var model = {k1: 'value1'};
+            DataBind.bind(elem, model);
+            expect( $(elem).text() ).toBe( model.k1 );
+
+            model.k1 = 'value2';
+            expect( $(elem).text() ).toBe( 'value2' );
+        });
+
+        it("should span (inline el) be 1-way bound as it has no user input", function() {
+            var elem = document.getElementById('span1');
+            $(elem).attr('data-key', 'k1');
+            var model = {k1: 'value1'};
+            DataBind.bind(elem, model);
+            expect( $(elem).text() ).toBe( model.k1 );
+
+            model.k1 = 'value2';
+            expect( $(elem).text() ).toBe( 'value2' );
+        });
+
+    });
+
+    describe("Test binding works on nested elements", function() {
+        // single el
+        // varying tree size
     });
 
     describe("Test unbind detaches bindings", function() {
