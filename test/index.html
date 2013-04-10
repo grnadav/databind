@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
+    <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <script src="../src/DataBind.js"></script>
+
+    <script src="DataBind.spec.js"></script>
+
+    <script type="text/javascript">
+        (function() {
+            var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.updateInterval = 1000;
+
+            var htmlReporter = new jasmine.HtmlReporter();
+
+            jasmineEnv.addReporter(htmlReporter);
+
+            jasmineEnv.specFilter = function(spec) {
+                return htmlReporter.specFilter(spec);
+            };
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function() {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+                execJasmine();
+            };
+
+            function execJasmine() {
+                jasmineEnv.execute();
+            }
+
+        })();
+    </script>
+</head>
+<body>
+
+<div style="width:0; height:0; overflow: hidden;">
+    <input      data-key="k1" id="in-text" type="text" />
+    <textarea   data-key="k2" id="textarea" rows="5" cols="30"></textarea>
+    <input      data-key="k3" id="in-checkbox" type="checkbox"/>
+    <input      data-key="k4" id="in-radio" type="radio"/>
+    <select     data-key="k5" id="select" name="select">
+        <option value="value1">Value 1</option>
+        <option value="value2" selected>Value 2</option>
+        <option value="value3">Value 3</option>
+    </select>
+    <select     data-key="k6" id="select-mul" multiple="true">
+        <option value="value1">Value 1</option>
+        <option value="value2" selected>Value 2</option>
+        <option value="value3">Value 3</option>
+    </select>
+    <div   style="display:inline;"     data-key="k7" id="div1">dd</div>
+    <span       data-key="k8" id="span1">ss</span>
+    <span       data-key="k9.k91" id="span2">ss2</span>
+
+    <div id="has-children">
+        <input      data-key="k10.k101" type="text" />
+        <div>
+            <span>
+                <h data-key="k10.k102">Deep H</h>
+            </span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
