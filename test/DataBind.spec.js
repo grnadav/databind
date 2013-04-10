@@ -157,8 +157,70 @@ describe("DataBind", function() {
 
     });
 
+    describe("Test different input element types", function() {
+        var elementsTestbed = $('#elements-testbed');
+
+        it("should accept bare dom elements" ,function() {
+            var model = {k1: 'value1'};
+            var bareEl = document.createElement('div');
+            bareEl.setAttribute('data-key', 'k1');
+            bareEl.setAttribute('id', 'xxx');
+            elementsTestbed.append(bareEl);
+
+            DataBind.bind(bareEl, model);
+
+            expect( $(bareEl).text() ).toBe( model.k1 );
+            model.k1 = 'value1-mod';
+            expect( $(bareEl).text() ).toBe( model.k1 );
+        });
+
+        it("should accept jquery wrapped dom elements" ,function() {
+            var model = {k1: 'value1'};
+            var jqEl = $('<div></div>').attr('id', 'xxx1').attr('data-key', 'k1');
+            elementsTestbed.append(jqEl);
+
+            DataBind.bind(jqEl, model);
+
+            expect( $(jqEl).text() ).toBe( model.k1 );
+            model.k1 = 'value1-mod';
+            expect( $(jqEl).text() ).toBe( model.k1 );
+        });
+    });
+
     describe("Test binding works on nested elements", function() {
-        // single el
+        var elementsTestbed = $('#elements-testbed');
+        it("should bind a nested element via its parent", function() {
+            var model = {k1: 'value1'};
+            var childEl = $('<div></div>').attr('data-key', 'k1');
+            var el = $('<div></div>').append(childEl);
+            elementsTestbed.append(el);
+
+            DataBind.bind(el, model);
+
+            expect( $(childEl).text() ).toBe( model.k1 );
+            model.k1 = 'value1-mod';
+            expect( $(childEl).text() ).toBe( model.k1 );
+        });
+
+        it("should bind a nested element via its parent with multiple children", function() {
+            var model = {k1: 'value1', k2: 'value2'};
+            var childEl1 = $('<div></div>').attr('data-key', 'k1');
+            var childEl2 = $('<div></div>').attr('data-key', 'k2');
+            var el = $('<div></div>').append(childEl1);
+            el.append(childEl2);
+            elementsTestbed.append(el);
+
+            DataBind.bind(el, model);
+
+            expect( $(childEl1).text() ).toBe( model.k1 );
+            expect( $(childEl2).text() ).toBe( model.k2 );
+            model.k1 = 'value1-mod';
+            model.k2 = 'value2-mod';
+            expect( $(childEl1).text() ).toBe( model.k1 );
+            expect( $(childEl2).text() ).toBe( model.k2 );
+
+        });
+
         // varying tree size
     });
 
