@@ -22,6 +22,19 @@ describe("DataBind", function() {
         }
     }
 
+    function isArrayEqual(arr1, arr2) {
+        if (arr1.length !== arr2.length) return false;
+        // make sure both arrays have same values exactly
+        var i;
+        for (i=0; i<arr1.length; i++) {
+            if (arr2.indexOf(arr1[i]) === -1) return false;
+        }
+        for (i=0; i<arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) === -1) return false;
+        }
+        return true;
+    }
+
     describe("Test different DOM element type", function() {
 
         it("should input type text be 2-way bound", function() {
@@ -86,6 +99,38 @@ describe("DataBind", function() {
             // simulate as if the change was a user input
             fireEvent(elem, 'change');
             expect( model.k1 ).toBe( false );
+        });
+
+        it("should select be 2-way bound", function() {
+            var elem = document.getElementById('select');
+            $(elem).attr('data-key', 'k1');
+            var model = {k1: 'value1'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = 'value2';
+            expect( $(elem).val() ).toBe( 'value2' );
+
+            $(elem).val('value2');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( model.k1 ).toBe( 'value2' );
+        });
+
+        it("should select with multi-select be 2-way bound", function() {
+            var elem = document.getElementById('select-mul');
+            $(elem).attr('data-key', 'k1');
+            var model = {k1: ['value1', 'value2']};
+            DataBind.bind(elem, model);
+            expect( isArrayEqual($(elem).val(), model.k1)).toBe(true);
+
+            model.k1 = ['value1', 'value3'];
+            expect( isArrayEqual($(elem).val(), ['value1', 'value3'])).toBe(true);
+
+            $(elem).val('value3');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( isArrayEqual(model.k1, ['value3'])).toBe(true);
         });
 
     });
