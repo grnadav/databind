@@ -352,6 +352,29 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( '2013-03' );
         });
 
+        it("should datetime-local be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'datetime-local');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: "2013-04-10T01:02"};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = "2013-04-10T01:02";
+            expect( $(elem).val() ).toBe( "2013-04-10T01:02" );
+
+            // browser enforces valid values!
+            model.k1 = "2013-13-10T01:02";
+            expect( $(elem).val() ).toBe( '' );
+
+            $(elem).val("2013-04-10T01:03");
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( "2013-04-10T01:03" );
+        });
+
     });
 
     describe("Test different input element types", function() {
