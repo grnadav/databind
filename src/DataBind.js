@@ -446,7 +446,7 @@
             }
             return el.checked;
         }
-        if (['text', 'textarea', 'select-one'].indexOf(el.type) >= 0) {
+        if (['text', 'textarea', 'select-one', 'email'].indexOf(el.type) >= 0) {
             if (isSetter) {
                 el.value = newVal;
             }

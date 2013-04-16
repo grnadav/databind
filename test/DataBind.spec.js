@@ -36,6 +36,7 @@ describe("DataBind", function() {
     }
 
     describe("Test different DOM element type", function() {
+        var elementsTestbed = $('#elements-testbed');
 
         it("should input type text be 2-way bound", function() {
             var textElem = document.getElementById('in-text');
@@ -155,6 +156,25 @@ describe("DataBind", function() {
             expect( $(elem).text() ).toBe( 'value2' );
         });
 
+        it("should email be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'email');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: 'x@a.com'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = 'x@b.com';
+            expect( $(elem).val() ).toBe( 'x@b.com' );
+
+            $(elem).val('x@c.com');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( 'x@c.com' );
+        });
+
     });
 
     describe("Test different input element types", function() {
@@ -221,7 +241,43 @@ describe("DataBind", function() {
 
         });
 
-        // varying tree size
+        it("should bind a deeply nested element via its parent", function() {
+            var model = {k1: 'value1'};
+            var childEl = $('<div></div>').attr('data-key', 'k1');
+            var midChildEl = $('<div></div>').append(childEl);
+            var el = $('<div></div>').append(midChildEl);
+            elementsTestbed.append(el);
+
+            DataBind.bind(el, model);
+
+            expect( $(childEl).text() ).toBe( model.k1 );
+            model.k1 = 'value1-mod';
+            expect( $(childEl).text() ).toBe( model.k1 );
+        });
+    });
+
+    xdescribe("Test binding multiple times same el to same model does not affect", function() {
+        var elementsTestbed = $('#elements-testbed');
+        it("should once unbind no bindings exists", function() {
+            var model = {k1: 'value1'};
+            var el = $('<input/>').attr('data-key', 'k1').attr('type', 'text');
+            elementsTestbed.append(el);
+
+            DataBind.bind(el, model);
+            DataBind.bind(el, model);
+            DataBind.unbind(el, model);
+
+            model.k1 = 'value1-new-val';
+            expect( $(el).val() ).toBe( 'value1' );
+
+            $(el).val('changed via elem.');
+            // simulate as if the change was a user input
+            fireEvent(el[0], 'input');
+            expect( model.k1 ).toBe( 'value1-new-val' );
+        });
+
+        // re-attach
+        // removes watches
     });
 
     describe("Test unbind detaches bindings", function() {
@@ -242,6 +298,7 @@ describe("DataBind", function() {
         // watch
         // unwatch(fn)
         // unwatch()
+        // add same fn twice does not fire it twice
     });
 
 
