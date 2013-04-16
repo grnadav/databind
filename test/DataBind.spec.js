@@ -251,6 +251,25 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( 'c' );
         });
 
+        it("should search be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'tel');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: '111111'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = '111112';
+            expect( $(elem).val() ).toBe( '111112' );
+
+            $(elem).val('111113');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( '111113' );
+        });
+
     });
 
     describe("Test different input element types", function() {
