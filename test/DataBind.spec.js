@@ -398,6 +398,29 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( "2013-04-12" );
         });
 
+        it("should color be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'color');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: "#000000"};
+            DataBind.bind(elem, model);
+            expect( elem.value ).toBe( "#000000" );
+
+            model.k1 = "#000001";
+            expect( $(elem).val() ).toBe( "#000001" );
+
+            // browser enforces valid values!
+            model.k1 = "#gggggg";
+            expect( $(elem).val() ).toBe( '#000000' );
+
+            $(elem).val("#000002");
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( "#000002" );
+        });
+
     });
 
     describe("Test different input element types", function() {

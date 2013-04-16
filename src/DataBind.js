@@ -446,7 +446,7 @@
             }
             return el.checked;
         }
-        if (['text', 'textarea', 'select-one', 'email', 'url', 'week', 'time', 'search', 'tel', 'range', 'number', 'month', 'datetime-local', 'date'].indexOf(el.type) >= 0) {
+        if (['text', 'textarea', 'select-one', 'email', 'url', 'week', 'time', 'search', 'tel', 'range', 'number', 'month', 'datetime-local', 'date', 'color'].indexOf(el.type) >= 0) {
             if (isSetter) {
                 el.value = newVal;
             }
