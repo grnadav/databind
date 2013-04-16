@@ -251,7 +251,7 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( 'c' );
         });
 
-        it("should search be 2-way bound", function() {
+        it("should tel be 2-way bound", function() {
             var elem = document.createElement('input');
             $(elem).attr('type', 'tel');
             $(elem).attr('data-key', 'k1');
@@ -268,6 +268,35 @@ describe("DataBind", function() {
             // simulate as if the change was a user input
             fireEvent(elem, 'change');
             expect( $(elem).val() ).toBe( '111113' );
+        });
+
+        it("should range be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'range');
+            $(elem).attr('min', '1');
+            $(elem).attr('max', '10');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: '1'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = '2';
+            expect( $(elem).val() ).toBe( '2' );
+
+            // make sure 'max' is preserved
+            model.k1 = '12';
+            expect( $(elem).val() ).toBe( '10' );
+
+            // make sure 'min' is preserved
+            model.k1 = '0';
+            expect( $(elem).val() ).toBe( '1' );
+
+            $(elem).val('3');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( '3' );
         });
 
     });
