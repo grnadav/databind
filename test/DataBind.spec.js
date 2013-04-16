@@ -375,6 +375,29 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( "2013-04-10T01:03" );
         });
 
+        it("should date be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'date');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: "2013-04-10"};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = "2013-04-11";
+            expect( $(elem).val() ).toBe( "2013-04-11" );
+
+            // browser enforces valid values!
+            model.k1 = "2013-13-11";
+            expect( $(elem).val() ).toBe( '' );
+
+            $(elem).val("2013-04-12");
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( "2013-04-12" );
+        });
+
     });
 
     describe("Test different input element types", function() {
