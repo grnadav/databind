@@ -196,21 +196,40 @@ describe("DataBind", function() {
 
         it("should week be 2-way bound", function() {
             var elem = document.createElement('input');
-            $(elem).attr('type', 'url');
+            $(elem).attr('type', 'week');
             $(elem).attr('data-key', 'k1');
             elementsTestbed.append(elem);
 
-            var model = {k1: '2013-W1'};
+            var model = {k1: '2013-W01'};
             DataBind.bind(elem, model);
             expect( $(elem).val() ).toBe( model.k1 );
 
-            model.k1 = '2013-W2';
-            expect( $(elem).val() ).toBe( '2013-W2' );
+            model.k1 = '2013-W02';
+            expect( $(elem).val() ).toBe( '2013-W02' );
 
-            $(elem).val('2013-W3');
+            $(elem).val('2013-W03');
             // simulate as if the change was a user input
             fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '2013-W3' );
+            expect( $(elem).val() ).toBe( '2013-W03' );
+        });
+
+        it("should time be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'time');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: '01:02'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = '01:03';
+            expect( $(elem).val() ).toBe( '01:03' );
+
+            $(elem).val('01:04');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( '01:04' );
         });
 
     });
