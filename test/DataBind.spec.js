@@ -299,6 +299,36 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( '3' );
         });
 
+
+        it("should number be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'number');
+            $(elem).attr('min', '1');
+            $(elem).attr('max', '10');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: '1'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = '2';
+            expect( $(elem).val() ).toBe( '2' );
+
+            // make sure 'max' is NOT preserved
+            model.k1 = '12';
+            expect( $(elem).val() ).toBe( '12' );
+
+            // make sure 'min' is NOT preserved
+            model.k1 = '0';
+            expect( $(elem).val() ).toBe( '0' );
+
+            $(elem).val('3');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( '3' );
+        });
+
     });
 
     describe("Test different input element types", function() {
