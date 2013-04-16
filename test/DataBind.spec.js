@@ -175,6 +175,25 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( 'x@c.com' );
         });
 
+        it("should url be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'url');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: 'www.x.com'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = 'www.y.com';
+            expect( $(elem).val() ).toBe( 'www.y.com' );
+
+            $(elem).val('www.z.com');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( 'www.z.com' );
+        });
+
     });
 
     describe("Test different input element types", function() {
