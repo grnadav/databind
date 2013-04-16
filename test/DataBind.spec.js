@@ -329,6 +329,29 @@ describe("DataBind", function() {
             expect( $(elem).val() ).toBe( '3' );
         });
 
+        it("should month be 2-way bound", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'month');
+            $(elem).attr('data-key', 'k1');
+            elementsTestbed.append(elem);
+
+            var model = {k1: '2013-01'};
+            DataBind.bind(elem, model);
+            expect( $(elem).val() ).toBe( model.k1 );
+
+            model.k1 = '2013-02';
+            expect( $(elem).val() ).toBe( '2013-02' );
+
+            // browser enforces valid values!
+            model.k1 = '2013-13';
+            expect( $(elem).val() ).toBe( '' );
+
+            $(elem).val('2013-03');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'change');
+            expect( $(elem).val() ).toBe( '2013-03' );
+        });
+
     });
 
     describe("Test different input element types", function() {
