@@ -547,5 +547,91 @@ describe("DataBind", function() {
         // add same fn twice does not fire it twice
     });
 
+    describe("Test Binding against Templates", function() {
+
+        // setup the tests with Handlebars showcase
+        var el = $('<div>');
+        var templateStr = '<input type="text" data-key="k1"/>                   \
+                               <div>{{title}}</div>                             \
+                               {{#with author}}                                 \
+                                    <h2>By {{firstName}} {{lastName}}</h2>      \
+                               {{/with}}                                        \
+                               {{#each people}}                                 \
+                                    <li>{{this}}</li>                           \
+                               {{/each}}                                        \
+                               {{#if author}}                                   \
+                                    <h1>{{firstName}} {{lastName}}</h1>         \
+                               {{else}}                                         \
+                                    <h1>Unknown Author</h1>                     \
+                               {{/if}}                                          \
+                               {{! comment }}                                   \
+                               {{#unless license}}                              \
+                                    <h3 class="warning">no license!</h3>        \
+                               {{/unless}}                                      \
+                               <h2>By {{author.firstName}}</h2>                 \
+                               {{#list animals}}{{type}} : {{color}}{{/list}}';
+        var model = {
+            title: 'title1',
+            people: ['p1','p2','p3'],
+            author: {
+                firstName: 'first',
+                lastName: 'last'
+            },
+            animals: [
+                {type: 'zebra', color: 'bw'},
+                {type: 'lion', color: 'brown'}
+            ]
+        };
+        var templateEl = $('script').html(templateStr);
+
+        Handlebars.registerHelper('list', function(items, options) {
+            var out = "<ul>";
+
+            for(var i=0, l=items.length; i<l; i++) {
+                out = out + "<li>" + options.fn(items[i]) + "</li>";
+            }
+
+            return out + "</ul>";
+        });
+
+        it("DOM Should reflect changes in model", function() {
+
+
+            DataBind.bindTemplate(el, templateEl, model);
+        });
+
+        xit("Should update model when DOM changes", function() {
+
+        });
+
+        xit("Should be able to unbind", function() {
+
+        });
+
+        xit("Should alert Watchables when something changes", function() {
+
+        });
+
+        xit("Should be able to remove Watchables", function() {
+
+        });
+
+        xit("Should support pre-compiled Handlebars templates", function() {
+
+        });
+
+        xit("Should support script element Handlebars templates", function() {
+
+        });
+
+        xit("Should support inlined-string Handlebars templates", function() {
+
+        });
+
+        xit("Should live without Handlebars, just throw warning when used", function() {
+
+        });
+    });
+
 
 });
