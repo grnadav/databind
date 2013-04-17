@@ -551,8 +551,8 @@ describe("DataBind", function() {
 
         // setup the tests with Handlebars showcase
         var el = $('<div>');
-        var templateStr = '<input type="text" data-key="k1"/>                   \
-                               <div>{{title}}</div>                             \
+        var templateStr =     '<input type="text" data-key="k1"/>               \
+                               <div name="title">{{title}}</div>                \
                                {{#with author}}                                 \
                                     <h2>By {{firstName}} {{lastName}}</h2>      \
                                {{/with}}                                        \
@@ -582,7 +582,7 @@ describe("DataBind", function() {
                 {type: 'lion', color: 'brown'}
             ]
         };
-        var templateEl = $('script').html(templateStr);
+        var templateEl = $('<script></script>').html(templateStr);
 
         Handlebars.registerHelper('list', function(items, options) {
             var out = "<ul>";
@@ -595,9 +595,12 @@ describe("DataBind", function() {
         });
 
         it("DOM Should reflect changes in model", function() {
-
-
             DataBind.bindTemplate(el, templateEl, model);
+
+            expect( $('[name="title"]',el).text() ).toBe( 'title1' );
+
+            model.title = 'title2';
+            expect( $('[name="title"]',el).text() ).toBe( 'title2' );
         });
 
         xit("Should update model when DOM changes", function() {
