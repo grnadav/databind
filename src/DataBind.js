@@ -1029,7 +1029,59 @@
     }
 
     function bindTemplate(el, template, model) {
+        if (!el || !template || !model) return;
 
+        if (!window.Handlebars) {
+            console.warn('To use DataBind.bindTemplate you need to include Handlebars.js on your page');
+            return;
+        }
+
+        var templateStr;
+
+        // safe jQuery stripping
+        var simpleEl = getBareDomElement(el);
+        if (simpleEl !== el) {
+            arguments[0] = simpleEl;
+            return bindTemplate.apply(this, arguments);
+        }
+
+        // TODO be able to accept pre-compiled templates - which are objects?
+        if (!isString(template)) {
+            // safe jQuery stripping
+            simpleEl = getBareDomElement(template);
+            if (simpleEl !== template) {
+                arguments[1] = simpleEl;
+                return bindTemplate.apply(this, arguments);
+            }
+
+            templateStr = simpleEl.innerHTML;
+        } else {
+            templateStr = template;
+        }
+
+        if (Handlebars.compile) {
+            var compiledTemplate = Handlebars.compile(templateStr);
+        }
+
+        function getRenderElemFn(el, compiledTemplate, model) {
+            return function() {
+                el.innerHTML = compiledTemplate(model);
+            };
+        }
+
+        var renderRlFn = getRenderElemFn(el, compiledTemplate, model);
+
+        // initial rendering of the element
+        renderRlFn();
+
+        // regular bind on el
+        // TODO add config for single way ?
+        var watchable = bind(el, model);
+
+        // watch for model changes and re-render
+        WatchJS.watch(model, renderRlFn);
+
+        return watchable;
     }
 
     return {
