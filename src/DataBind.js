@@ -499,6 +499,16 @@
     }
 
     /**
+     * General purpose util that tells if a given input is a String
+     * @private
+     * @param stringToCheck - value to examine
+     * @returns {boolean} string or not
+     */
+    function isString(stringToCheck) {
+        return (typeof stringToCheck == 'string' || stringToCheck instanceof String);
+    }
+
+    /**
      * Get the event name that the element fires then it changes value
      * @private
      * @param el DomElement to get event name for
@@ -1018,8 +1028,13 @@
         el.watchable.unwatch();
     }
 
+    function bindTemplate(el, template, model) {
+
+    }
+
     return {
         bind: bind,
-        unbind: unbind
+        unbind: unbind,
+        bindTemplate: bindTemplate
     };
 });
