@@ -571,6 +571,7 @@ describe("DataBind", function() {
                                <h2>By {{author.firstName}}</h2>                 \
                                {{#list animals}}{{type}} : {{color}}{{/list}}';
         var model = {
+            k1: 'value 1',
             title: 'title1',
             people: ['p1','p2','p3'],
             author: {
@@ -603,8 +604,15 @@ describe("DataBind", function() {
             expect( $('[name="title"]',el).text() ).toBe( 'title2' );
         });
 
-        xit("Should update model when DOM changes", function() {
-
+        it("Should update model when DOM changes", function() {
+            DataBind.bindTemplate(el, templateEl, model);
+            
+            var inp = $('[data-key="k1"]', el);
+            inp.val('other');
+            // simulate as if the change was a user input
+            fireEvent(inp[0], 'input');
+            expect( model.k1 ).toBe( 'other' );
+            
         });
 
         xit("Should be able to unbind", function() {
