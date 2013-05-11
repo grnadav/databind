@@ -6,7 +6,7 @@
  * WORKS WITH:
  * IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+
  *
- * Version: 0.2.0
+ * Version: 0.4.0
  *
  * FORK:
  * https://github.com/grnadav/databind.git
@@ -1083,10 +1083,29 @@
 
         return watchable;
     }
+    
+    function unbindTemplate(el, template, model) {
+        // safe jQuery stripping
+        var simpleEl = getBareDomElement(el);
+        if (simpleEl !== el) {
+            arguments[0] = simpleEl;
+            return unbindTemplate.apply(this, arguments);
+        }
+        
+        // regular unbind of el and model in case the template has kay bindings
+        unbind(el, model);
+        
+        // remove all watchers on the watchable
+        el.watchable.unwatch();
+        
+        // unwatch model
+        WatchJS.unwatch(model);
+    }
 
     return {
         bind: bind,
         unbind: unbind,
-        bindTemplate: bindTemplate
+        bindTemplate: bindTemplate,
+        unbindTemplate: unbindTemplate
     };
 });

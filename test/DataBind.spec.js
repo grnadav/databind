@@ -595,7 +595,7 @@ describe("DataBind", function() {
             return out + "</ul>";
         });
 
-        it("DOM Should reflect changes in model", function() {
+        xit("DOM Should reflect changes in model", function() {
             DataBind.bindTemplate(el, templateEl, model);
 
             expect( $('[name="title"]',el).text() ).toBe( 'title1' );
@@ -604,7 +604,7 @@ describe("DataBind", function() {
             expect( $('[name="title"]',el).text() ).toBe( 'title2' );
         });
 
-        it("Should update model when DOM changes", function() {
+        xit("Should update model when DOM changes", function() {
             DataBind.bindTemplate(el, templateEl, model);
             
             var inp = $('[data-key="k1"]', el);
@@ -615,8 +615,18 @@ describe("DataBind", function() {
             
         });
 
-        xit("Should be able to unbind", function() {
-
+        it("Should be able to unbind", function() {
+            DataBind.bindTemplate(el, templateEl, model);
+            
+            var inp = $('[data-key="k1"]', el);
+            var origVal = model.k1;
+            
+            DataBind.unbindTemplate(el, templateEl, model);
+                        
+            inp.val('other');
+            // simulate as if the change was a user input
+            fireEvent(inp[0], 'input');
+            expect( model.k1 ).toBe( origVal );
         });
 
         xit("Should alert Watchables when something changes", function() {
