@@ -1032,6 +1032,19 @@
         el.watchable.unwatch();
     }
 
+    /**
+     * Bind two-way an element to a Handlebars template
+     * @param {DOMElement/jQueryDOMElement} el - DOM element to bind
+     * @param {string/DOMElement} template - Handlebars template in either the DOM or a literal string
+     * @param {JSONObject} model - Object containing the keys to bind against
+     * @returns {Watchable} {
+     *     watch( WatcherFn ),      // WatcherFn will be called with the event, and this as the elem fire upon
+     *                              // ev.data.key      - the data-bound key on the element
+     *                              // ev.data.oldValue - value before the change
+     *                              // ev.data.newValue - value after the change
+     *     unwatch( [WatcherFn] ),  // not providing the Fn to unwatch removes all watchers
+     * }
+     */
     function bindTemplate(el, template, model) {
         if (!el || !template || !model) return;
 
