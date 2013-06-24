@@ -796,6 +796,10 @@
         var props = getCommonBindingProps(el, model);
         if (!props.keyExists) return false;
 
+        // make sure we don't bind the el,model couple more then once
+        if (el.boundModel) return true;
+        el.boundModel = model;
+
         // update elem from model
         var modelVal = modelValue(model, props.key);
         value(el, modelVal);

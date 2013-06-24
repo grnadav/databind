@@ -502,7 +502,7 @@ describe("DataBind", function() {
         });
     });
 
-    xdescribe("Test binding multiple times same el to same model does not affect", function() {
+    describe("Test binding multiple times same el to same model does not affect", function() {
         var elementsTestbed = $('#elements-testbed');
         it("should once unbind no bindings exists", function() {
             var model = {k1: 'value1'};
