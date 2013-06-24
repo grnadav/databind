@@ -595,7 +595,7 @@ describe("DataBind", function() {
             return out + "</ul>";
         });
 
-        xit("DOM Should reflect changes in model", function() {
+        it("DOM Should reflect changes in model", function() {
             DataBind.bindTemplate(el, templateEl, model);
 
             expect( $('[name="title"]',el).text() ).toBe( 'title1' );
@@ -604,7 +604,7 @@ describe("DataBind", function() {
             expect( $('[name="title"]',el).text() ).toBe( 'title2' );
         });
 
-        xit("Should update model when DOM changes", function() {
+        it("Should update model when DOM changes", function() {
             DataBind.bindTemplate(el, templateEl, model);
             
             var inp = $('[data-key="k1"]', el);
