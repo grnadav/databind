@@ -1,0 +1,28 @@
+{
+  "name": "databind",
+  "version": "0.3.1",
+  "homepage": "https://github.com/grnadav/databind",
+  "description": "Two way data binding, dependant on nothing",
+  "main": "src/DataBind.min.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "data",
+    "binding",
+    "databinding"
+  ],
+  "authors": [
+    "Nadav Greenberg <grnadav@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
