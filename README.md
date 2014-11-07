@@ -1,4 +1,4 @@
-# DataBind.js 0.2.0 [Download](https://github.com/grnadav/databind/archive/master.zip)
+# DataBind.js 0.3.1 [Download](https://github.com/grnadav/databind/archive/master.zip)
 
 ## About
 
