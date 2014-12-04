@@ -1,10 +1,10 @@
-# DataBind.js 0.3.2 [Download](https://github.com/grnadav/databind/archive/0.3.2.zip)
+# DataBind.js 0.4.0 [Download](https://github.com/grnadav/databind/archive/0.4.0.zip)
 
 ## About
 
 DataBind is a 2-way data binding library.  
 It lets you easily bind a DOM element (and optionally its subtree) to a Model (Object) and keep them at sync.  
-At 3039 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
+At 3159 bytes minified & gzipped, it is the smallest 2-way binding library available to date!
 
 ### Dependencies
 Non what so ever!  
@@ -87,6 +87,25 @@ var model = {
 DataBind.bind( $('#id1'), model );
 ```
 
+## Allow binding of models with arrays
+```html
+<textarea  id="id1" data-key="k1[1].k2[0].id" id="id1" rows="5" cols="30"></textarea>
+```
+
+```javascript
+var model = {
+    k1: [
+        {k2: 'not me'},
+        {k2: [
+            {
+                id: "i'm it"
+            }
+        ]}
+    ]
+};
+DataBind.bind( $('#id1'), model );
+```
+
 ## Confiureable binding
 ```html
 <textarea   data-key="k1" id="id1" rows="5" cols="30"></textarea>
@@ -142,6 +161,9 @@ watchable.unwatch( printer );
 // or remove all watchers
 watchable.unwatch();
 ```
+
+# Version 0.4.0
+* Add support for binding to models with arrays, e.g. data-key="k1[0].k3[1].id" , as requested in Issue #8
 
 # Version 0.3.2
 * Fix issue #9 - allow password fields
