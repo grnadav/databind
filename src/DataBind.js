@@ -505,7 +505,7 @@
      * @returns {string} - event name
      */
     function getEventNameForEl(el) {
-        if (['checkbox', 'radio', 'select-one', 'select-multiple'].indexOf(el.type) >= 0) {
+        if (['checkbox', 'radio', 'select-one', 'select-multiple', 'password'].indexOf(el.type) >= 0) {
             return 'change';
         }
         if (['text', 'textarea'].indexOf(el.type) >= 0) {
