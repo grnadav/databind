@@ -63,7 +63,8 @@ Demo = (function () {
         k10: {
             k101: 'bbbb',
             k102: 'Deep H1'
-        }
+        },
+        "k11": [{"id":'val1'}, {"id":'val2'}]
     };
 
     /**

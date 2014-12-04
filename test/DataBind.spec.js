@@ -521,6 +521,54 @@ describe("DataBind", function() {
         });
     });
 
+    describe("Test binding works on keys with arrays", function() {
+        var elementsTestbed = $('#elements-testbed');
+        it("should bind to element inside array model", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'text');
+            $(elem).attr('data-key', 'k1[0].k2');
+            elementsTestbed.append(elem);
+
+            var model = {k1: [{k2: 'a'}, {k2: 'b'}]};
+            DataBind.bind(elem, model);
+
+            // test assignment to DOM from model
+            expect( elem.value ).toBe( "a" );
+
+            // test model change effects DOM
+            model.k1[0].k2 = "c";
+            expect( $(elem).val() ).toBe( "c" );
+
+            // simulate as if the change was a user input
+            $(elem).val("d");
+            fireEvent(elem, 'input');
+            expect( model.k1[0].k2).toBe( "d" );
+        });
+
+        it("should bind to element inside deep array model", function() {
+            var elem = document.createElement('input');
+            $(elem).attr('type', 'text');
+            $(elem).attr('data-key', 'k1[1].k2[1].k3');
+            elementsTestbed.append(elem);
+
+            var model = {k1: [{k2: 'a'}, {k2: [{},{k3:'v'},{}] }]};
+            DataBind.bind(elem, model);
+
+            // test assignment to DOM from model
+            expect( elem.value ).toBe( "v" );
+
+            // test model change effects DOM
+            model.k1[1].k2[1].k3 = "c";
+            expect( $(elem).val() ).toBe( "c" );
+
+            // simulate as if the change was a user input
+            $(elem).val("d");
+            fireEvent(elem, 'input');
+            expect( model.k1[1].k2[1].k3).toBe( "d" );
+        });
+
+    });
+
     xdescribe("Test binding multiple times same el to same model does not affect", function() {
         var elementsTestbed = $('#elements-testbed');
         it("should once unbind no bindings exists", function() {

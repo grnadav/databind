@@ -583,25 +583,6 @@
     }
 
     /**
-     * Check if a key exists in the model object
-     * @private
-     * @param model - Obejct - data model to test
-     * @param key - key to test, can be deep key (e.g. a.b.c)
-     * @returns {boolean} - exists or not
-     */
-    function keyExists(model, key) {
-        var splitKey = key.split('.');
-        var modelDepth = model;
-        var i;
-
-        for (i = 0; i < splitKey.length; i++) {
-            if (!modelDepth.hasOwnProperty(splitKey[i])) return false;
-            modelDepth = modelDepth[ splitKey[i] ];
-        }
-        return true;
-    }
-
-    /**
      * Get the value of a deep key from a model
      * @private
      * @param model - Obejct - Data model
@@ -609,13 +590,31 @@
      * @returns The value of the given key on the model
      */
     function getModelDeepKey(model, key) {
+        var isArrayKey = new RegExp(/.*\[(\d+)\]/);
         var splitKey = key.split('.');
         var modelDepth = model;
         var i;
 
-        for (i = 0; i < splitKey.length - 1; i++) {
-            modelDepth = modelDepth[ splitKey[i] ];
+        function diveIntoArray() {
+            var justKey, isInArray;
+            var didDive = false;
+            isInArray = isArrayKey.exec(splitKey[i]);
+            if (isInArray && isInArray.length) {
+                justKey = splitKey[i].split('[')[0];
+                modelDepth = modelDepth[justKey][+isInArray[1]];
+                didDive = true;
+            }
+
+            return didDive;
         }
+
+        for (i = 0; i < splitKey.length - 1; i++) {
+            if (!diveIntoArray()) {
+                modelDepth = modelDepth[ splitKey[i] ];
+            }
+        }
+        diveIntoArray();
+
         return modelDepth;
     }
 
@@ -756,7 +755,6 @@
         var key = getDatasetKey(el);
         if (!key) return {};
         // make sure the key is defined in the model
-        var isKeyExists = keyExists(model, key);
         var deepModel = getModelDeepKey(model, key);
         var deepKey = key.split('.');
         deepKey = deepKey[ deepKey.length - 1 ];
@@ -765,7 +763,7 @@
             key: key,
             deepKey: deepKey,
             deepModel: deepModel,
-            keyExists: isKeyExists
+            keyExists: !!deepModel
         }
     }
 
