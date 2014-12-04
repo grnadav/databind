@@ -1,7 +1,7 @@
 Demo = (function () {
 
     function init() {
-        var ids = [ 'in-text', 'textarea', 'in-checkbox', 'in-radio', 'select', 'select-mul', 'div1', 'span1', 'span2', 'has-children' ];
+        var ids = [ 'in-text', 'textarea', 'in-checkbox', 'in-radio', 'in-password', 'select', 'select-mul', 'div1', 'span1', 'span2', 'has-children' ];
         var i;
 
         for (i = 0; i < ids.length; i++) {
@@ -52,6 +52,7 @@ Demo = (function () {
         k2: 'text-k2',
         k3: true,
         k4: true,
+        k41: 'strongpassword',
         k5: 'value1',
         k6: ['value1', 'value3'],
         k7: 'text-k3',
