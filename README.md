@@ -1,4 +1,4 @@
-# DataBind.js 0.3.1 [Download](https://github.com/grnadav/databind/archive/0.3.1.zip)
+# DataBind.js 0.3.2 [Download](https://github.com/grnadav/databind/archive/0.3.2.zip)
 
 ## About
 
@@ -143,6 +143,9 @@ watchable.unwatch( printer );
 watchable.unwatch();
 ```
 
+# Version 0.3.2
+* Fix issue #9 - allow password fields
+
 # Coming up!
 Plans for future release includes:
 * Remove unused code from intercorporated watch.js code
@@ -150,6 +153,9 @@ Plans for future release includes:
 * Improve demo to enable editing the model and displaying the logs visually
 * More browsers support (IE8, IE7? IE6?!)
 * Other things you request :)
- 
+
+# Testing
+Open test/index.html in any browser
+
 # Contributing
 If you wish to help with improving this library, feel free to fork and pull-request
