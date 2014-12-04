@@ -6,7 +6,7 @@
  * WORKS WITH:
  * IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+
  *
- * Version: 0.2.0
+ * Version: 0.4.0
  *
  * FORK:
  * https://github.com/grnadav/databind.git
@@ -499,6 +499,16 @@
     }
 
     /**
+     * General purpose util that tells if a given input is a String
+     * @private
+     * @param stringToCheck - value to examine
+     * @returns {boolean} string or not
+     */
+    function isString(stringToCheck) {
+        return (typeof stringToCheck == 'string' || stringToCheck instanceof String);
+    }
+
+    /**
      * Get the event name that the element fires then it changes value
      * @private
      * @param el DomElement to get event name for
@@ -784,6 +794,10 @@
         var props = getCommonBindingProps(el, model);
         if (!props.keyExists) return false;
 
+        // make sure we don't bind the el,model couple more then once
+        if (el.boundModel) return true;
+        el.boundModel = model;
+
         // update elem from model
         var modelVal = modelValue(model, props.key);
         value(el, modelVal);
@@ -1016,8 +1030,97 @@
         el.watchable.unwatch();
     }
 
+    /**
+     * Bind two-way an element to a Handlebars template
+     * @param {DOMElement/jQueryDOMElement} el - DOM element to bind
+     * @param {string/DOMElement} template - Handlebars template in either the DOM or a literal string
+     * @param {JSONObject} model - Object containing the keys to bind against
+     * @returns {Watchable} {
+     *     watch( WatcherFn ),      // WatcherFn will be called with the event, and this as the elem fire upon
+     *                              // ev.data.key      - the data-bound key on the element
+     *                              // ev.data.oldValue - value before the change
+     *                              // ev.data.newValue - value after the change
+     *     unwatch( [WatcherFn] ),  // not providing the Fn to unwatch removes all watchers
+     * }
+     */
+    function bindTemplate(el, template, model) {
+        if (!el || !template || !model) return;
+
+        if (!window.Handlebars) {
+            console.warn('To use DataBind.bindTemplate you need to include Handlebars.js on your page');
+            return;
+        }
+
+        var templateStr;
+
+        // safe jQuery stripping
+        var simpleEl = getBareDomElement(el);
+        if (simpleEl !== el) {
+            arguments[0] = simpleEl;
+            return bindTemplate.apply(this, arguments);
+        }
+
+        // TODO be able to accept pre-compiled templates - which are objects?
+        if (!isString(template)) {
+            // safe jQuery stripping
+            simpleEl = getBareDomElement(template);
+            if (simpleEl !== template) {
+                arguments[1] = simpleEl;
+                return bindTemplate.apply(this, arguments);
+            }
+
+            templateStr = simpleEl.innerHTML;
+        } else {
+            templateStr = template;
+        }
+
+        if (Handlebars.compile) {
+            var compiledTemplate = Handlebars.compile(templateStr);
+        }
+
+        function getRenderElemFn(el, compiledTemplate, model) {
+            return function() {
+                el.innerHTML = compiledTemplate(model);
+            };
+        }
+
+        var renderRlFn = getRenderElemFn(el, compiledTemplate, model);
+
+        // initial rendering of the element
+        renderRlFn();
+
+        // regular bind on el
+        // TODO add config for single way ?
+        var watchable = bind(el, model);
+
+        // watch for model changes and re-render
+        WatchJS.watch(model, renderRlFn);
+
+        return watchable;
+    }
+    
+    function unbindTemplate(el, template, model) {
+        // safe jQuery stripping
+        var simpleEl = getBareDomElement(el);
+        if (simpleEl !== el) {
+            arguments[0] = simpleEl;
+            return unbindTemplate.apply(this, arguments);
+        }
+        
+        // regular unbind of el and model in case the template has kay bindings
+        unbind(el, model);
+        
+        // remove all watchers on the watchable
+        el.watchable.unwatch();
+        
+        // unwatch model
+        WatchJS.unwatch(model);
+    }
+
     return {
         bind: bind,
-        unbind: unbind
+        unbind: unbind,
+        bindTemplate: bindTemplate,
+        unbindTemplate: unbindTemplate
     };
 });
