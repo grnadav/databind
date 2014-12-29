@@ -481,6 +481,13 @@
             return result;
         }
 
+        if (el.attributes && el.attributes.contenteditable && el.attributes.contenteditable.value === "true") {
+            if (isSetter) {
+                el.innerHTML = newVal;
+            }
+            return el.innerHTML;
+        }
+
         // else assume non-input element
         if (isSetter) {
             el.innerText = newVal;
@@ -520,6 +527,9 @@
         }
         if (['text', 'textarea'].indexOf(el.type) >= 0) {
             return 'input';
+        }
+        if (el.attributes && el.attributes.contenteditable && el.attributes.contenteditable.value === "true") {
+            return 'keyup';
         }
     }
 
