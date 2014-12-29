@@ -156,6 +156,23 @@ describe("DataBind", function() {
             expect( $(elem).text() ).toBe( 'value2' );
         });
 
+        it("should span (inline el) be 2-way bound if it has contenteditable", function() {
+            var elem = document.getElementById('spanEditable');
+            $(elem).attr('data-key', 'k1');
+            var model = {k1: 'value1'};
+            DataBind.bind(elem, model);
+            expect( $(elem).text() ).toBe( model.k1 );
+
+            model.k1 = 'value2';
+            expect( $(elem).text() ).toBe( 'value2' );
+
+            $(elem).text('changed via elem.');
+            // simulate as if the change was a user input
+            fireEvent(elem, 'keyup');
+            expect( model.k1 ).toBe( 'changed via elem.' );
+
+        });
+
         it("should email be 2-way bound", function() {
             var elem = document.createElement('input');
             $(elem).attr('type', 'email');
