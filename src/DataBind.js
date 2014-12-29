@@ -483,7 +483,7 @@
 
         if (el.attributes && el.attributes.contenteditable && el.attributes.contenteditable.value === "true") {
             if (isSetter) {
-                el.innerHTML = newVal;
+                el.innerText = newVal;
             }
             return el.innerHTML;
         }
