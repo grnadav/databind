@@ -483,7 +483,7 @@
 
         if (el.attributes && el.attributes.contenteditable && el.attributes.contenteditable.value === "true") {
             if (isSetter) {
-                el.innerText = newVal;
+                el.innerHTML = newVal;
             }
             return el.innerHTML;
         }
@@ -492,7 +492,7 @@
         if (isSetter) {
             el.innerText = newVal;
         }
-        return el.innerHTML;
+        return el.innerText;
     }
 
     /**
