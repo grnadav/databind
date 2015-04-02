@@ -508,10 +508,11 @@
         if (['checkbox', 'radio', 'select-one', 'select-multiple', 'password'].indexOf(el.type) >= 0) {
             return 'change';
         }
-        if (['text', 'textarea'].indexOf(el.type) >= 0) {
+        if (['text', 'textarea', 'email', 'url', 'week', 'time', 'search', 'tel', 'range', 'number', 'month', 'datetime-local', 'date', 'color'].indexOf(el.type) >= 0) {
             return 'input';
         }
     }
+
 
     /**
      * Get a unique hash key for an Object or fetch previously given one to it
