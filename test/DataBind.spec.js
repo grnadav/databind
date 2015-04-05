@@ -171,8 +171,13 @@ describe("DataBind", function() {
 
             $(elem).val('x@c.com');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( 'x@c.com' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( 'x@c.com' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should url be 2-way bound", function() {
@@ -190,8 +195,13 @@ describe("DataBind", function() {
 
             $(elem).val('www.z.com');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( 'www.z.com' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( 'www.z.com' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should week be 2-way bound", function() {
@@ -209,8 +219,13 @@ describe("DataBind", function() {
 
             $(elem).val('2013-W03');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '2013-W03' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( '2013-W03' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should time be 2-way bound", function() {
@@ -228,8 +243,13 @@ describe("DataBind", function() {
 
             $(elem).val('01:04');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '01:04' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( '01:04' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should search be 2-way bound", function() {
@@ -247,8 +267,13 @@ describe("DataBind", function() {
 
             $(elem).val('c');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( 'c' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( 'c' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should tel be 2-way bound", function() {
@@ -266,8 +291,13 @@ describe("DataBind", function() {
 
             $(elem).val('111113');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '111113' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( '111113' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should range be 2-way bound", function() {
@@ -295,8 +325,13 @@ describe("DataBind", function() {
 
             $(elem).val('3');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '3' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( '3' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
 
@@ -325,8 +360,13 @@ describe("DataBind", function() {
 
             $(elem).val('3');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '3' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( '3' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should month be 2-way bound", function() {
@@ -348,8 +388,13 @@ describe("DataBind", function() {
 
             $(elem).val('2013-03');
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( '2013-03' );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( '2013-03' );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should datetime-local be 2-way bound", function() {
@@ -371,8 +416,13 @@ describe("DataBind", function() {
 
             $(elem).val("2013-04-10T01:03");
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( "2013-04-10T01:03" );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( "2013-04-10T01:03" );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should date be 2-way bound", function() {
@@ -394,8 +444,13 @@ describe("DataBind", function() {
 
             $(elem).val("2013-04-12");
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( "2013-04-12" );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( "2013-04-12" );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should color be 2-way bound", function() {
@@ -417,8 +472,13 @@ describe("DataBind", function() {
 
             $(elem).val("#000002");
             // simulate as if the change was a user input
-            fireEvent(elem, 'change');
-            expect( $(elem).val() ).toBe( "#000002" );
+            // fireEvent(elem, 'change');
+            // expect( $(elem).val() ).toBe( "#000002" );
+
+            // should be listening to the input event
+            fireEvent(elem, 'input');
+            // need to make sure that firing the event updates the model value
+            expect( model.k1 ).toBe( $(elem).val() );
         });
 
         it("should password be 2-way bound", function() {
