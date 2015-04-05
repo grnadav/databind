@@ -1,4 +1,4 @@
-# DataBind.js 0.4.0 [Download](https://github.com/grnadav/databind/archive/0.4.0.zip)
+# DataBind.js 0.4.1 [Download](https://github.com/grnadav/databind/archive/0.4.1.zip)
 
 ## About
 
@@ -161,6 +161,9 @@ watchable.unwatch( printer );
 // or remove all watchers
 watchable.unwatch();
 ```
+
+# Version 0.4.1
+* Add support for many input field types ('email', 'url', 'week', 'time', 'search', 'tel', 'range', 'number', 'month', 'datetime-local', 'date', 'color') by @rdblakemore
 
 # Version 0.4.0
 * Add support for binding to models with arrays, e.g. data-key="k1[0].k3[1].id" , as requested in Issue #8
