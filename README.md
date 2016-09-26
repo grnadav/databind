@@ -1,4 +1,5 @@
 # DataBind.js 0.4.1 [Download](https://github.com/grnadav/databind/archive/0.4.1.zip)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 ## About
 
