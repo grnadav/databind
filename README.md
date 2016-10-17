@@ -1,9 +1,6 @@
 # DataBind.js 0.4.1 [Download](https://github.com/grnadav/databind/archive/0.4.1.zip)
 [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
-
-[![Tech overview](http://46.120.35.192:3000/)](http://46.120.35.192:3000/)
-
 ## About
 
 DataBind is a 2-way data binding library.  
