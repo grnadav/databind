@@ -11,7 +11,7 @@ At 3159 bytes minified & gzipped, it is the smallest 2-way binding library avail
 Non what so ever!  
 ~~It's only dependency is [Watch.JS](https://github.com/melanke/Watch.JS)~~ not needed since 0.1.1 internalized the library
 
-##Compatible with all serious browsers :P
+## Compatible with all serious browsers :P
 Works with: IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+
 
 #### HTML Script TAG
